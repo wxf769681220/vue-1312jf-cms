@@ -1,0 +1,65 @@
+@import "variable.styl"
+
+.content-inline
+  display: flex
+  align-items: center
+
+.img-fluid
+  display: block
+  max-width: 100%
+
+.nav 
+  display: flex
+  flex-wrap: wrap
+  margin-bottom: 0
+  padding-left: 0
+  list-style: none
+
+.input-control
+  display: block
+  width: 100%
+  line-height: $line-height-base
+  font-size: $font-size-base
+  color: $input-color
+  vertical-align: middle
+  background-color: transparent
+  border: 1px solid $input-border-color
+  border-radius:  0
+  box-shadow: none
+  outline: none
+  &::placeholder
+    color: $input-placeholder-color
+  &:focus
+    border-color: $primary-color
+    box-shadow: 0 0 0 2px $input-focus-shadow-color
+
+.btn
+  display: inline-block
+  vertical-align: middle
+  white-space: nowrap
+  letter-spacing: .1em
+  border: 1px solid transparent
+  border-radius: .25em
+  user-select: none
+  appearance: none
+  cursor: pointer
+
+.fixed-top
+  position: fixed
+  top: 0
+  right: 0
+  left: 0
+  z-index: 1030
+
+.fixed-bottom
+  position: fixed
+  right: 0
+  bottom: 0
+  left: 0
+  z-index: 1030
+
+.clearfix
+  &::after
+    display: block
+    content: ""
+    clear: both
