@@ -15,7 +15,8 @@
     "vuex": "^3.0.1",
     "axios": "^0.16.1",
     "view-design": "^4.0.0",
-    "vee-validate": "^3.0.3"
+    "vee-validate": "^3.0.3",
+    "moment": "^2.24.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.11.0",

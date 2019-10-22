@@ -3,6 +3,7 @@ const Login = () => import('components/login')
 const Home = () => import('components/home')
 const VMap = () => import('components/map')
 const MatchList = () => import('components/match-list')
+const MatchCreate = () => import('components/match-create')
 
 const Page1 = () => import('components/page1')
 const Page2 = () => import('components/page2')
@@ -30,6 +31,10 @@ const routes = [
       {
         path: 'match-list',
         component: MatchList
+      },
+      {
+        path: 'match-create',
+        component: MatchCreate
       }
     ]
   },

@@ -3,7 +3,9 @@ import axios from 'axios'
 // GET
 export function get(url) {
   return function (params, token) {
-    axios.defaults.headers.get['Authorization'] = token
+    if (token) {
+      axios.defaults.headers.get['Authorization'] = token
+    }
     return axios.get(url, {
       params
     }).then((res) => {
@@ -20,7 +22,9 @@ export function get(url) {
 // POST
 export function post(url) {
   return function (params, token) {
-    axios.defaults.headers.post['Authorization'] = token
+    if (token) {
+      axios.defaults.headers.post['Authorization'] = token
+    }
     return axios.post(url, params).then((res) => {
       const { status, data } = res
       if (status === 200) {

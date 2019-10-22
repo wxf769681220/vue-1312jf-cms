@@ -148,7 +148,7 @@ export default {
       ],
       menu2: [
         {
-          name: '比赛管理',
+          name: '赛事管理',
           url: '/option1',
           icon: 'ios-paper',
           children: [
@@ -336,6 +336,7 @@ export default {
         transform: rotate(-90deg)
       .user-info
         position: fixed
+        top: 0
         right: 20px
         display: flex
         align-items: center

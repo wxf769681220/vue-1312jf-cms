@@ -1,8 +1,13 @@
 <template>
-  <div class="match-list">matchList</div>
+  <div class="match-list">
+    <div class="card-wrap">
+      <match-card v-for="match in matchList" :key="match.id" :data="match"></match-card>
+    </div>
+  </div>
 </template>
 
 <script>
+import MatchCard from 'components/module/match-card'
 import { getMatch } from 'api'
 import { mapGetters } from 'vuex'
 
@@ -10,7 +15,9 @@ export default {
   name: 'match-list',
   props: {},
   data() {
-    return {}
+    return {
+      matchList: []
+    }
   },
   computed: {
     ...mapGetters(['token'])
@@ -22,30 +29,18 @@ export default {
   },
   methods: {
     getMatchList() {
-      getMatch(
-        {
-          page: 1,
-          pagecount: 9
-        },
-        this.token
-      ).then(res => {
+      getMatch({ page: 1, pagecount: 12 }, this.token).then(res => {
         console.log(res)
-        // if (res.code === 200) {
-        //   this.setToken(res.token)
-        //   this.setMobile(this.account.mobile)
-        //   this.$router.push({
-        //     path: '/home/map'
-        //   })
-        //   this._clearInput()
-        // } else {
-        //   this.errors = true
-        //   this.errorMsg = res.err
-        // }
+        if (res.code === 200) {
+          this.matchList = res.matches
+        }
       })
     }
   },
-  components: {},
-  beforedestroy() {}
+  beforedestroy() {},
+  components: {
+    MatchCard
+  }
 }
 </script>
 

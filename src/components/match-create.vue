@@ -1,57 +1,31 @@
 <template>
-  <div class="login">
-    <div class="header">
-      <h1 class>线下赛计分系统管理后台</h1>
-    </div>
-
+  <div class="match-create">
     <ValidationObserver class="form" ref="observer" tag="form" v-slot="{ valid }">
       <!-- 用户名 -->
       <validation-provider
         class="form-group"
-        name="mobile"
+        name="matchName"
         tag="div"
         rules="required"
         v-slot="{ errors }"
       >
         <div class="input-group">
           <div class="input-wrap">
-            <input class="input-control" type="text" placeholder="手机号" v-model="account.mobile">
-          </div>
-        </div>
-      </validation-provider>
-
-      <!-- 密码 -->
-      <validation-provider
-        class="form-group"
-        name="password"
-        tag="div"
-        rules="required"
-        v-slot="{ errors }"
-      >
-        <div class="input-group">
-          <div class="input-wrap">
-            <input
-              class="input-control"
-              type="password"
-              placeholder="密码"
-              v-model="account.password"
-            >
+            <input class="input-control" type="text" placeholder="比赛名称" v-model="matchInfo.name">
           </div>
         </div>
       </validation-provider>
 
       <!-- 登录按钮 -->
       <Button
-        class="btn-login"
+        class="btn-create"
         type="success"
         :long="true"
         :disabled="!valid"
-        @click="onLogin"
+        @click="onBtnCreate"
       >
-        <span>登录</span>
+        <span>创建</span>
       </Button>
-
-      <div class="my-2 text-error" v-show="errors">{{errorMsg}}</div>
     </ValidationObserver>
   </div>
 </template>
@@ -63,80 +37,58 @@ import { ValidationObserver, ValidationProvider, extend } from 'vee-validate'
 import { required } from 'vee-validate/dist/rules'
 import ZHCN from 'vee-validate/dist/locale/zh_CN'
 
-import { Login } from 'api'
-import { mapMutations } from 'vuex'
-
 export default {
-  name: 'login',
+  name: 'match-create',
+  props: {},
   data() {
     return {
-      errors: false,
-      errorMsg: '',
-      account: {
-        mobile: '',
-        password: ''
+      matchInfo: {
+        name: ''
       }
     }
+  },
+  computed: {
+    // ...mapGetters([''])
   },
   watch: {},
   mounted() {},
   created() {
+    // this.getMatchList()
     this.checkInput()
   },
   methods: {
-    ...mapMutations({
-      setMobile: 'SET_MOBILE',
-      setToken: 'SET_TOKEN'
-    }),
-    onLogin() {
-      Login({
-        mobile: this.account.mobile,
-        password: this.account.password
-      }).then((res) => {
-        // console.log(res)
-        if (res.code === 200) {
-          this.setToken(res.token)
-          this.setMobile(this.account.mobile)
-          this.$router.push({
-            path: '/home/map'
-          })
-          this._clearInput()
-        } else {
-          this.errors = true
-          this.errorMsg = res.err
-        }
-      })
-    },
+    // getMatchList() {
+    //   getMatch({ page: 1, pagecount: 12 }, this.token).then(res => {
+    //     console.log(res)
+    //     if (res.code === 200) {
+    //       this.matchList = res.matches
+    //     }
+    //   })
+    // }
+    onBtnCreate() {},
     checkInput() {
       extend('required', {
         ...required,
         message: ZHCN.messages['required']
       })
-    },
-    _clearInput() {
-      this.account.mobile = ''
-      this.account.password = ''
     }
   },
+  beforedestroy() {},
   components: {
-    Button,
     ValidationObserver,
-    ValidationProvider
+    ValidationProvider,
+    Button
   }
 }
 </script>
 
 <style lang="stylus" scoped>
 @import '~common/stylus/variable'
-.login
-  min-height: 100vh
-  background-color: $body-bg-color
-  .header
-    padding: 50px 0
-    text-align: center
+.match-create
+  margin: 20px
+  background-color: $white
   .form
     display: block
-    margin: 0 auto
     padding: 20px 15px
     width: 352px
     height: auto
@@ -175,7 +127,7 @@ export default {
       flex: 1 1 auto
       margin-left: 10px
       color: $error-color
-  .btn-login
+  .btn-create
     display: block
     width: 320px
     height: 40px
