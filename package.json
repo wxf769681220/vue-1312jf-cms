@@ -16,7 +16,9 @@
     "axios": "^0.16.1",
     "view-design": "^4.0.0",
     "vee-validate": "^3.0.3",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "file-saver": "^2.0.2",
+    "xlsx": "0.15.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.11.0",

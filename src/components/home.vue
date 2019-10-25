@@ -247,14 +247,14 @@ export default {
   },
   methods: {
     collapsed(value) {
-      console.log(value)
+      // console.log(value)
       this.isSider = value
     },
     collapsedSider() {
       this.$refs.sider.toggleCollapse()
     },
     menuOpenChange(value) {
-      console.log(value)
+      // console.log(value)
     },
     loggedin() {
       if (this.token) {

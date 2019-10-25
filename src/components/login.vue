@@ -50,7 +50,6 @@
       >
         <span>登录</span>
       </Button>
-
       <div class="my-2 text-error" v-show="errors">{{errorMsg}}</div>
     </ValidationObserver>
   </div>
@@ -100,7 +99,6 @@ export default {
           this.$router.push({
             path: '/home/map'
           })
-          this._clearInput()
         } else {
           this.errors = true
           this.errorMsg = res.err
@@ -112,10 +110,6 @@ export default {
         ...required,
         message: ZHCN.messages['required']
       })
-    },
-    _clearInput() {
-      this.account.mobile = ''
-      this.account.password = ''
     }
   },
   components: {

@@ -19,12 +19,12 @@ module.exports = {
       .use(webpack.ContextReplacementPlugin,
         [/moment[/\\]locale$/, /zh-cn/])
     // 针对 iview 空白字符报错
-    config.module
-      .rule('view-design')
-      .test(/view-design.src.*?js$/)
-      .use('babel')
-      .loader('babel-loader')
-      .end(),
+    // config.module
+    //   .rule('iview')
+    //   .test(/iview.src.*?js$/)
+    //   .use('babel')
+    //   .loader('babel-loader')
+    //   .end(),
     config.resolve.alias
       .set('api', resolve('src/api'))
       .set('common', resolve('src/common'))

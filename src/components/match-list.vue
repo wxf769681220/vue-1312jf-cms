@@ -1,12 +1,22 @@
 <template>
   <div class="match-list">
+    <!-- 比赛列表 -->
     <div class="card-wrap">
       <match-card v-for="match in matchList" :key="match.id" :data="match"></match-card>
     </div>
+    <!-- 分页 -->
+    <Page
+      class="page"
+      :total="page.total"
+      show-elevator
+      v-if="matchList.length"
+      @on-change="pageChange"
+    />
   </div>
 </template>
 
 <script>
+import { Page } from 'view-design'
 import MatchCard from 'components/module/match-card'
 import { getMatch } from 'api'
 import { mapGetters } from 'vuex'
@@ -16,7 +26,12 @@ export default {
   props: {},
   data() {
     return {
-      matchList: []
+      matchList: [],
+      page: {
+        total: 1,
+        currentPage: 1,
+        pageSize: 9
+      }
     }
   },
   computed: {
@@ -29,17 +44,31 @@ export default {
   },
   methods: {
     getMatchList() {
-      getMatch({ page: 1, pagecount: 12 }, this.token).then(res => {
+      getMatch(
+        {
+          page: this.page.currentPage,
+          pagecount: this.page.pageSize
+        },
+        this.token
+      ).then(res => {
         console.log(res)
         if (res.code === 200) {
           this.matchList = res.matches
+          this.page.total = res.count
+        } else {
+          console.log('获取比赛列表时出错!')
         }
       })
+    },
+    pageChange(value) {
+      this.page.currentPage = value
+      this.getMatchList()
     }
   },
   beforedestroy() {},
   components: {
-    MatchCard
+    MatchCard,
+    Page
   }
 }
 </script>
@@ -47,6 +76,15 @@ export default {
 <style lang="stylus" scoped>
 @import '~common/stylus/variable'
 .match-list
+  position: relative
   margin: 20px
+  padding: 20px 0
   background-color: $white
+  >>>.ivu-page
+    display: block
+    margin: 0 auto
+    padding: 50px 0
+    width: 800px
+    .ivu-page-item, .ivu-page-prev
+      margin-right: 8px
 </style>

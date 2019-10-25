@@ -4,5 +4,8 @@ export default {
   },
   SET_MOBILE: (state, mobile) => {
     state.mobile = mobile
+  },
+  SET_MATCH_INFO_BASE: (state, matchInfoBase) => {
+    state.matchInfoBase = matchInfoBase
   }
 }

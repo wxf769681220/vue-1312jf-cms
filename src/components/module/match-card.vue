@@ -44,7 +44,18 @@
       </div>
     </div>
     <div class="card-footer">
-      <Button class="btn-entry" type="primary" v-text="data.status > 0 ? '进入比赛' : '进入报名'" @click="onBtnEntry"></Button>
+      <Button
+        class="btn-entry"
+        type="warning"
+        v-if="data.status > 0"
+        @click="onBtnEntry(data)"
+      >进入比赛</Button>
+      <Button
+        class="btn-entry"
+        type="primary"
+        v-else
+        @click="onBtnEntry(data)"
+      >进入报名</Button>
     </div>
   </div>
 </template>
@@ -52,6 +63,8 @@
 <script>
 import { Icon, Button } from 'view-design'
 import moment from 'moment'
+import { mapMutations } from 'vuex'
+import { getMatchTypeString } from 'common/js/utils'
 
 export default {
   name: 'match-card',
@@ -68,21 +81,7 @@ export default {
   },
   computed: {
     matchType() {
-      let type = ''
-      switch (this.data.rule) {
-        case 0:
-          type = '单人赛'
-          break
-        case 1:
-          type = '团体赛'
-          break
-        case 2:
-          type = '双人赛'
-          break
-        default:
-          console.log('error：' + this.data.rule)
-      }
-      return type
+      return getMatchTypeString(this.data.rule)
     },
     startTime() {
       return moment(this.data.startTime).format('YYYY-MM-DD')
@@ -118,7 +117,25 @@ export default {
   mounted() {},
   created() {},
   methods: {
-    onBtnEntry() {}
+    onBtnEntry(data) {
+      // console.log(data)
+      if (data.status > 0) {
+        // 进入比赛
+        this.setMatchInfoBase(data)
+        this.$router.push({
+          path: `/home/match-entry/${data.id}`
+        })
+      } else {
+        // 进入报名
+        this.setMatchInfoBase(data)
+        this.$router.push({
+          path: `/home/match-enroll/${data.id}`
+        })
+      }
+    },
+    ...mapMutations({
+      setMatchInfoBase: 'SET_MATCH_INFO_BASE'
+    })
   },
   beforedestroy() {},
   components: {
@@ -137,6 +154,8 @@ export default {
   width: 18.2%
   border: 1px solid $border-color
   border-radius: 4px
+  &:hover
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1)
   .card-header
     padding: 0 15px
     height: 50px
@@ -166,8 +185,25 @@ export default {
       margin: 0 auto
       width: 60%
       height: 40px
+      // line-height: 40px
       font-size: $font-size-large
       font-weight: 600
       letter-spacing: 0.2em
       overflow: hidden
+// 自适应布局4列
+@media (min-width: 1450px) and (max-width: 1780px)
+  .match-card
+    width: 23.125%
+// 自适应布局3列
+@media (min-width: 1160px) and (max-width: 1449px)
+  .match-card
+    width: 31.333%
+// 自适应布局2列
+@media (min-width: 880px) and (max-width: 1159px)
+  .match-card
+    width: 47.75%
+// 自适应布局1列
+@media (max-width: 879px)
+  .match-card
+    width: 100%
 </style>
