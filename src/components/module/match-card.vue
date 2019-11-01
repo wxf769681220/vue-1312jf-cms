@@ -61,10 +61,13 @@
 </template>
 
 <script>
+// Iview Components
 import { Icon, Button } from 'view-design'
+// Script
 import moment from 'moment'
-import { mapMutations } from 'vuex'
 import { getMatchTypeString } from 'common/js/utils'
+// Vuex
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'match-card',

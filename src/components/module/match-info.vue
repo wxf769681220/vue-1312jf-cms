@@ -1,6 +1,6 @@
 <template>
   <Card class="match-info">
-    <h3 slot="title">基本信息</h3>
+    <h4 slot="title">比赛信息</h4>
     <div class="list-group">
       <div class="list-group-item content-inline">
         <div class="col">
@@ -63,8 +63,10 @@
 </template>
 
 <script>
-import moment from 'moment'
+// Iview Components
 import { Card, Icon } from 'view-design'
+// Script
+import moment from 'moment'
 import { getMatchTypeString } from 'common/js/utils'
 
 export default {
@@ -101,11 +103,11 @@ export default {
   mounted() {},
   created() {},
   methods: {},
+  beforedestroy() {},
   components: {
     Card,
     Icon
-  },
-  beforedestroy() {}
+  }
 }
 </script>
 
@@ -116,7 +118,4 @@ export default {
     height: 40px
   .list-group-item:not(:last-child)
     border-bottom: 1px dotted $border-color
-  >>>.ivu-card-body
-    padding-top: 0
-    padding-bottom: 0
 </style>

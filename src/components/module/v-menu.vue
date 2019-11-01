@@ -10,6 +10,7 @@
 </template>
 
 <script>
+// Iview Components
 import { Icon } from 'view-design'
 
 export default {
@@ -34,10 +35,9 @@ export default {
   mounted() {},
   created() {},
   methods: {},
+  beforedestroy() {},
   components: {
     Icon
-  },
-  beforedestroy() {
   }
 }
 </script>

@@ -1,12 +1,7 @@
 <template>
   <div class="match-create">
     <h2 class="mb-3">新建比赛</h2>
-    <ValidationObserver
-      class="form"
-      ref="observer"
-      tag="form"
-      v-slot="{ valid }"
-    >
+    <ValidationObserver class="form" ref="observer" tag="form" v-slot="{ valid }">
       <!-- 比赛名称 -->
       <validation-provider class="form-group" tag="div" rules="required" v-slot="{ errors }">
         <div class="input-group">
@@ -20,14 +15,25 @@
       <validation-provider class="form-group" tag="div" rules="required" v-slot="{ errors }">
         <div class="input-group">
           <div class="input-wrap">
-            <input class="input-control" type="text" placeholder="比赛地点" v-model="createForm.location">
+            <input
+              class="input-control"
+              type="text"
+              placeholder="比赛地点"
+              v-model="createForm.location"
+            >
           </div>
         </div>
       </validation-provider>
 
       <!-- 比赛时间 -->
       <div class="form-group">
-        <validation-provider class="mb-3" name="startTime" tag="div" rules="required|startTime" v-slot="{ errors }">
+        <validation-provider
+          class="mb-3"
+          name="startTime"
+          tag="div"
+          rules="required|startTime"
+          v-slot="{ errors }"
+        >
           <div class="content-inline">
             <DatePicker
               type="datetime"
@@ -145,44 +151,43 @@
       </div>
 
       <!-- 比赛类型 -->
-      <validation-provider class="form-group" tag="div" rules="required" v-slot="{ errors }">
-        <div class="input-group">
-          <div class="input-wrap">
-            <span class="lab">比赛类型：</span>
-            <RadioGroup class="radio-group" v-model="newType">
-              <Radio label="0">单人赛</Radio>
-              <Radio label="2">双人赛</Radio>
-              <Radio label="1">团体赛</Radio>
-            </RadioGroup>
-          </div>
+      <div class="form-group">
+        <div class="input-group h">
+          <span class="lab">比赛类型：</span>
+          <RadioGroup class="radio-group" v-model="newType">
+            <Radio label="0">单人赛</Radio>
+            <Radio label="2">双人赛</Radio>
+            <Radio label="1">团体赛</Radio>
+          </RadioGroup>
         </div>
-      </validation-provider>
+      </div>
 
       <!-- 计分规则 -->
-      <validation-provider class="form-group" tag="div" rules="required" v-slot="{ errors }">
-        <div class="input-group">
-          <div class="input-wrap">
-            <span class="lab">计分规则：</span>
-            <RadioGroup class="radio-group" v-model="newRule">
-              <Radio label="0">社体规则（普通）</Radio>
-              <Radio label="1">团体规则（淮安）</Radio>
-            </RadioGroup>
-          </div>
+      <div class="form-group">
+        <div class="input-group h">
+          <span class="lab">计分规则：</span>
+          <RadioGroup class="radio-group" v-model="newRule">
+            <Radio label="0">社体规则（普通）</Radio>
+            <Radio label="1">团体规则（淮安）</Radio>
+          </RadioGroup>
         </div>
-      </validation-provider>
+      </div>
 
-      <!-- 是否签到 -->
-      <validation-provider class="form-group" tag="div" rules="required" v-slot="{ errors }">
-        <div class="input-group">
-          <div class="input-wrap">
-            <span class="lab">签到：</span>
-            <RadioGroup class="radio-group" v-model="newSignIn">
-              <Radio label="1">是</Radio>
-              <Radio label="0">否</Radio>
-            </RadioGroup>
-          </div>
+      <!-- 是否含签到功能 -->
+      <div class="form-group">
+        <div class="input-group h">
+          <span class="lab">签到功能：</span>
+          <i-switch size="large" true-color="#13ce66" false-color="#ff4949" v-model="createForm.signIn">
+            <span slot="open">开启</span>
+            <span slot="close">关闭</span>
+          </i-switch>
+          <!-- <RadioGroup class="radio-group" v-model="newSignIn">
+            <Radio label="1">是</Radio>
+            <Radio label="0">否</Radio>
+          </RadioGroup>-->
+          <p class="text-error">（需要下载1312耍大牌客户端）</p>
         </div>
-      </validation-provider>
+      </div>
 
       <!-- 登录按钮 -->
       <Button
@@ -199,11 +204,14 @@
 </template>
 
 <script>
+// Iview Components
 import { Button, DatePicker, RadioGroup, Radio } from 'view-design'
 // ES6+ Add a rule.
 import { ValidationObserver, ValidationProvider, extend } from 'vee-validate'
 import { required } from 'vee-validate/dist/rules'
+// API
 import { createMatch } from 'api'
+// Vuex
 import { mapGetters } from 'vuex'
 
 export default {
@@ -223,7 +231,7 @@ export default {
         recordMobile: '12345678903',
         type: 0,
         rule: 0,
-        signIn: true
+        signIn: false
       },
       disabledTime: {
         disabledDate(date) {
@@ -249,14 +257,6 @@ export default {
       set(value) {
         this.createForm.rule = Number(value)
       }
-    },
-    newSignIn: {
-      get() {
-        return String(Number(this.createForm.signIn))
-      },
-      set(value) {
-        this.createForm.signIn = Boolean(Number(value))
-      }
     }
   },
   created() {
@@ -264,7 +264,6 @@ export default {
   },
   methods: {
     onBtnCreate() {
-      // console.log(this.createForm)
       let sendData = {
         name: this.createForm.name,
         location: this.createForm.location,
@@ -278,15 +277,16 @@ export default {
         recorderPhone: this.createForm.recordMobile,
         rule: this.createForm.type,
         regionRule: this.createForm.rule,
-        needSignIn: this.createForm.signIn
+        needSignIn: String(this.createForm.signIn)
       }
-      createMatch(sendData, this.token).then((res) => {
-        console.log(res)
+      createMatch('', sendData).then(res => {
+        // console.log(res)
         if (res.code === 200) {
           this.$router.push({
             path: '/home/match-list'
           })
         } else {
+          this.$message.error('创建比赛失败!')
           console.log('创建比赛失败!')
         }
       })
@@ -297,7 +297,7 @@ export default {
         message: '/* 必填项不能为空*/'
       })
       extend('startTime', {
-        validate: (value) => new Date(value) > new Date(),
+        validate: value => new Date(value) > new Date(),
         message: '开始时间不能比当前时间更早!'
       })
       extend('endTime', {
@@ -334,6 +334,11 @@ export default {
     .input-group
       display: flex
       align-items: center
+      &.h
+        height: 30px
+      .lab
+        flex: 0 0 80px
+        width: 80px
     .input-wrap
       position: relative
       display: flex

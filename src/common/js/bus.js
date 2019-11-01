@@ -1,4 +1,4 @@
-// 组件通信（非父子关系组件）
+// 数据通信（非父子关系组件）
 const install = function (Vue) {
   const Bus = new Vue({
     methods: {

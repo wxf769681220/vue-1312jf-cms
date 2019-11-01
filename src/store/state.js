@@ -2,7 +2,8 @@
 const state = sessionStorage.getItem('state') ? JSON.parse(sessionStorage.getItem('state')) : {
   token: '',
   mobile: '',
-  matchInfoBase: {}
+  matchInfoBase: {},
+  excelData: []
 }
 
 export default state

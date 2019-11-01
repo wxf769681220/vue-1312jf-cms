@@ -1,36 +1,52 @@
 <template>
-  <Modal class="upload-table" v-model="modalUploadTable" class-name="vertical-center-modal">
+  <Modal
+    class="upload-table"
+    v-model="modalUploadTable"
+    class-name="vertical-center-modal"
+    :loading="true"
+    ok-text="上传"
+    @on-ok="upload"
+  >
     <p slot="header">上传报名表</p>
     <input
       id="upload"
       type="file"
-      @change="importfxx()"
+      @change="uplaodExcel($event)"
       accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
     >
-    <!-- <Upload
-      action="//jsonplaceholder.typicode.com/posts/"
-      :format="['xlsx', 'pdf']"
-      :on-error="onError"
-      :on-success="onSuccess"
-    >
-      <div>
-        <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-        <p>点击选取需要上传文件</p>
-      </div>
-    </Upload>-->
+
+    <!-- 报名报模板下载-->
+    <div class="mt-3">
+      <span>报名表模板下载：</span>
+      <span class="text-primary" v-if="matchType === 0" @click="download('单人')">单人赛报名表</span>
+      <span class="text-primary" v-if="matchType === 2" @click="download('双人')">双人赛报名表</span>
+      <span class="text-primary" v-if="matchType === 1" @click="download('团体')">团体赛报名表</span>
+    </div>
   </Modal>
 </template>
 
 <script>
-// import { Modal, Upload, Icon } from 'view-design'
+// Iview Components
 import { Modal } from 'view-design'
+// Script
+import { getExcelData } from 'common/js/uploadExcel/exportData'
 
 export default {
   name: 'upload-table',
-  props: {},
+  props: {
+    matchId: {
+      type: Number,
+      defalut: 0
+    },
+    matchType: {
+      type: Number,
+      defalut: 0
+    }
+  },
   data() {
     return {
-      modalUploadTable: false
+      modalUploadTable: false,
+      excelData: []
     }
   },
   computed: {},
@@ -38,26 +54,19 @@ export default {
   mounted() {},
   created() {},
   methods: {
-    importfxx() {
-      this.getDataFile()
+    uplaodExcel(e) {
+      getExcelData(e, this.matchId).then(res => {
+        this.excelData = res
+        // console.log(res)
+      })
     },
-    getDataFile(file) {
-      let _this = this
-      let inputDOM = this.$refs.inputer
-      // 通过DOM取文件数据
-      this.file = event.currentTarget.files[0]
-      var f = this.file
-      var reader = new FileReader()
-
-      reader.readAsBinaryString(f)
-      reader.onload = function(e) {
-        console.log(e)
-      }
+    upload() {
+      this.$emit('upload-ok', this.excelData)
+      this.hide()
     },
-    onSuccess(response, file, fileList) {
-      console.log(file)
+    download(type) {
+      // window.open(`./source/${type}赛报名表.xlsx`)
     },
-    onError() {},
     show() {
       this.modalUploadTable = true
     },

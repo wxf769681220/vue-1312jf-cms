@@ -41,13 +41,7 @@
       </validation-provider>
 
       <!-- 登录按钮 -->
-      <Button
-        class="btn-login"
-        type="success"
-        :long="true"
-        :disabled="!valid"
-        @click="onLogin"
-      >
+      <Button class="btn-login" type="success" :long="true" :disabled="!valid" @click="onLogin">
         <span>登录</span>
       </Button>
       <div class="my-2 text-error" v-show="errors">{{errorMsg}}</div>
@@ -56,14 +50,15 @@
 </template>
 
 <script>
+// Iview Components
 import { Button } from 'view-design'
 // ES6+ Add a rule.
 import { ValidationObserver, ValidationProvider, extend } from 'vee-validate'
 import { required } from 'vee-validate/dist/rules'
-import ZHCN from 'vee-validate/dist/locale/zh_CN'
-
-import { Login } from 'api'
+// Vuex
 import { mapMutations } from 'vuex'
+// API
+import { Login } from 'api'
 
 export default {
   name: 'login',
@@ -88,7 +83,7 @@ export default {
       setToken: 'SET_TOKEN'
     }),
     onLogin() {
-      Login({
+      Login('', {
         mobile: this.account.mobile,
         password: this.account.password
       }).then((res) => {
@@ -108,7 +103,7 @@ export default {
     checkInput() {
       extend('required', {
         ...required,
-        message: ZHCN.messages['required']
+        message: '必填项不能为空!'
       })
     }
   },

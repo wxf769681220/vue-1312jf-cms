@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" v-if="token">
     <Layout>
       <!-- 左侧边栏 -->
       <Sider
@@ -61,6 +61,7 @@
           <Icon @click.native="collapsedSider" :class="rotateIcon" type="md-menu" size="24"></Icon>
           <v-menu :data="pageMenu" :hasIcon="false"></v-menu>
           <div class="user-info">
+            <span @click="onQuit">安全退出</span>
             <div class="cirle-box">
               <img src="~common/img/avata.jpg" alt="用户头像">
             </div>
@@ -93,7 +94,7 @@ import {
   MenuItem,
   Submenu
 } from 'view-design'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'home',
@@ -239,7 +240,11 @@ export default {
         : { width: '50px', height: '50px' }
     }
   },
-  watch: {},
+  watch: {
+    '$store.token'() {
+      console.log('ok123')
+    }
+  },
   mounted() {},
   created() {
     // 检测登录状态
@@ -268,6 +273,14 @@ export default {
         this.$router.push({
           path: '/login'
         })
+      }
+    },
+    ...mapMutations(['SET_QUIT']),
+    onQuit() {
+      console.log(this.$store.state.token)
+      this.SET_QUIT()
+      if (!this.$store.state.token) {
+        this.$router.push('/login')
       }
     }
   },

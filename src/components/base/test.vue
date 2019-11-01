@@ -1,6 +1,6 @@
 <template>
   <div class="test">
-test
+ 11
   </div>
 </template>
 
@@ -9,16 +9,16 @@ export default {
   name: 'test',
   props: {},
   data() {
-    return {}
+    return {
+    }
   },
   computed: {},
   watch: {},
   mounted() {},
   created() {},
   methods: {},
-  components: {},
-  beforedestroy() {
-  }
+  beforedestroy() {},
+  components: {}
 }
 </script>
 

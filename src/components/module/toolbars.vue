@@ -2,10 +2,9 @@
   <div class="toolbars clearfix">
     <ButtonGroup class="btn-group" :size="buttonSize">
       <Button type="primary" v-show="isUpload" :size="buttonSize" @click="onUpload">导入</Button>
-      <Button type="warning" v-show="isAdd" :size="buttonSize" @click="onAdd">新增</Button>
+      <Button type="warning" v-show="isAdd" :size="buttonSize" @click="onAddNew">新增</Button>
       <Button type="error" v-show="isDelete" :size="buttonSize" @click="onDelete">删除</Button>
       <Button type="success" v-show="isDrawLots" :size="buttonSize" @click="onDrawLots">抽签</Button>
-
       <Button type="info" v-show="isRefresh" :size="buttonSize" @click="onRefresh">刷新</Button>
       <Button type="default" v-show="isReturn" :size="buttonSize" @click="onReturn">返回</Button>
       <Button type="error" v-show="isDownload" :size="buttonSize" @click="onDownload">下载</Button>
@@ -15,11 +14,11 @@
 </template>
 
 <script>
+// Iview Components
 import { Button, ButtonGroup } from 'view-design'
 
 export default {
   name: 'toolbars',
-  inject: ['reload'],
   props: {
     isRefresh: {
       type: Boolean,
@@ -68,23 +67,26 @@ export default {
       this.$router.go(-1)
     },
     onRefresh() {
-      this.reload()
-      this.$Message.success('页面已刷新!')
+      this.$emit('refresh')
     },
     onDownload() {},
     onPrint() {},
     onUpload() {
       this.$emit('upload')
     },
-    onAdd() {},
-    onDelete() {},
+    onAddNew() {
+      this.$emit('addNew')
+    },
+    onDelete() {
+      this.$emit('deleteX')
+    },
     onDrawLots() {}
   },
+  beforedestroy() {},
   components: {
     Button,
     ButtonGroup
-  },
-  beforedestroy() {}
+  }
 }
 </script>
 

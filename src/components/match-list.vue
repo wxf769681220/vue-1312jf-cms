@@ -16,12 +16,17 @@
 </template>
 
 <script>
+// Iview Components
 import { Page } from 'view-design'
+// Module Components
 import MatchCard from 'components/module/match-card'
+// API
 import { getMatch } from 'api'
+// Vuex
 import { mapGetters } from 'vuex'
 
 export default {
+  inject: ['reload'],
   name: 'match-list',
   props: {},
   data() {
@@ -44,18 +49,16 @@ export default {
   },
   methods: {
     getMatchList() {
-      getMatch(
-        {
-          page: this.page.currentPage,
-          pagecount: this.page.pageSize
-        },
-        this.token
-      ).then(res => {
+      getMatch('', {
+        page: this.page.currentPage,
+        pagecount: this.page.pageSize
+      }).then(res => {
         console.log(res)
         if (res.code === 200) {
           this.matchList = res.matches
           this.page.total = res.count
         } else {
+          this.$Message.error('获取比赛列表时出错!')
           console.log('获取比赛列表时出错!')
         }
       })
