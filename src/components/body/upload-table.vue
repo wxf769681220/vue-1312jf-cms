@@ -46,22 +46,26 @@ export default {
   data() {
     return {
       modalUploadTable: false,
-      excelData: []
+      excelData: [],
+      fileName: ''
     }
   },
   computed: {},
   watch: {},
   mounted() {},
-  created() {},
+  created() {
+    // console.log(this.matchType)
+  },
   methods: {
     uplaodExcel(e) {
-      getExcelData(e, this.matchId).then(res => {
-        this.excelData = res
-        // console.log(res)
+      getExcelData(e, this.matchId, this.matchType).then(res => {
+        console.log('获取excel表信息：', res)
+        this.excelData = res.data
+        this.fileName = res.fileName
       })
     },
     upload() {
-      this.$emit('upload-ok', this.excelData)
+      this.$emit('upload-ok', this.excelData, this.fileName)
       this.hide()
     },
     download(type) {

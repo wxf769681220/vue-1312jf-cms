@@ -1,0 +1,75 @@
+@import "variable.styl"
+table
+  border-collapse: collapse
+
+.tables-score
+  .table
+    width: 100%
+    min-width: 500px
+    text-align: center
+    border: 1px solid $table-border-color
+    th,
+    td
+      padding: 10px 12px
+      border: 1px solid $table-border-color
+    th
+      font-size: $font-size-large
+// modal全局样式
+.enroll-add,
+.enroll-modify
+  .form
+    display: block
+    padding: 10px 20px 10px 0
+    .form-group
+      margin-bottom: 16px
+    .input-group
+      display: flex
+      align-items: center
+      label
+        display: block
+        padding-right: 10px
+        flex: 0 0 104px
+        text-align: right
+      textarea
+        border-color: $border-color
+    .input-wrap
+      position: relative
+      display: flex
+      flex: 0 0 320px
+      width: 320px
+    .input-control
+      padding: 6px 12px
+      flex: 1 1 auto
+      width: auto
+      max-width: 320px
+      min-height: 40px
+      line-height: 24px
+      &.errors
+        border-color: $error-color
+        box-shadow: none
+    .btn-confirm
+      display: block
+      margin: 30px auto 20px
+      width: 320px
+      height: 40px
+      font-size: $font-size-large
+      font-weight: 600
+      letter-spacing: 0.2em
+
+.signer
+  .lab
+    width: 80px
+    text-align: right
+.btn-match-start
+  display: block
+  margin: 0 auto
+  width: 120px
+  font-size: $font-size-large
+  font-weight: 600
+
+.vertical-center-modal
+  display: flex
+  align-items: center
+  justify-content: center
+  .ivu-modal
+    top: 0

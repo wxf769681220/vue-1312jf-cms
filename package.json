@@ -19,7 +19,7 @@
     "moment": "^2.24.0",
     "file-saver": "^2.0.2",
     "xlsx": "0.15.1",
-    "qs": "^6.9.0"
+    "query-string": "^6.9.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.11.0",

@@ -1,17 +1,17 @@
 <template>
   <div class="match-list">
-    <!-- 比赛列表 -->
-    <div class="card-wrap">
-      <match-card v-for="match in matchList" :key="match.id" :data="match"></match-card>
+    <div class="layout-content">
+      <!-- 比赛列表 -->
+      <match-card v-for="match in matchList" :key="match.id" :match="match"></match-card>
+      <!-- 分页 -->
+      <Page
+        class="page"
+        show-elevator
+        v-if="matchList.length"
+        :total="page.total"
+        @on-change="pageChange"
+      />
     </div>
-    <!-- 分页 -->
-    <Page
-      class="page"
-      :total="page.total"
-      show-elevator
-      v-if="matchList.length"
-      @on-change="pageChange"
-    />
   </div>
 </template>
 
@@ -22,28 +22,19 @@ import { Page } from 'view-design'
 import MatchCard from 'components/module/match-card'
 // API
 import { getMatch } from 'api'
-// Vuex
-import { mapGetters } from 'vuex'
 
 export default {
-  inject: ['reload'],
   name: 'match-list',
-  props: {},
   data() {
     return {
       matchList: [],
       page: {
-        total: 1,
+        total: 0,
         currentPage: 1,
         pageSize: 9
       }
     }
   },
-  computed: {
-    ...mapGetters(['token'])
-  },
-  watch: {},
-  mounted() {},
   created() {
     this.getMatchList()
   },
@@ -53,13 +44,10 @@ export default {
         page: this.page.currentPage,
         pagecount: this.page.pageSize
       }).then(res => {
-        console.log(res)
+        // console.log(res)
         if (res.code === 200) {
           this.matchList = res.matches
           this.page.total = res.count
-        } else {
-          this.$Message.error('获取比赛列表时出错!')
-          console.log('获取比赛列表时出错!')
         }
       })
     },
@@ -68,7 +56,6 @@ export default {
       this.getMatchList()
     }
   },
-  beforedestroy() {},
   components: {
     MatchCard,
     Page
@@ -78,11 +65,15 @@ export default {
 
 <style lang="stylus" scoped>
 @import '~common/stylus/variable'
+@import "~common/stylus/media.styl"
 .match-list
   position: relative
-  margin: 20px
-  padding: 20px 0
+  margin: 0 20px
+  padding-top: 64px
   background-color: $white
+  .layout-content
+    padding: 20px
+    border-top: 20px solid $body-bg-color
   >>>.ivu-page
     display: block
     margin: 0 auto

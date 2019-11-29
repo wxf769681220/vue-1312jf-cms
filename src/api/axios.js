@@ -8,6 +8,7 @@ import store from '@/store'
 **/
 axios.defaults.timeout = 10000
 axios.defaults.headers.post['Content-Type'] = 'application/json; charset=UTF-8'
+axios.defaults.traditional = true
 
 /*
  * 请求拦截器

@@ -59,7 +59,14 @@
         <!-- 顶部固定导航区块-->
         <Header class="layout-header-bar" :style="{padding: 0}">
           <Icon @click.native="collapsedSider" :class="rotateIcon" type="md-menu" size="24"></Icon>
-          <v-menu :data="pageMenu" :hasIcon="false"></v-menu>
+          <ul class="nav">
+            <li v-for="item in pageMenu" :key="item.name">
+              <router-link :to="{path: item.url}">
+                <Icon class="mr-1" type="ios-navigate"></Icon>
+                <span>{{item.name}}</span>
+              </router-link>
+            </li>
+          </ul>
           <div class="user-info">
             <span @click="onQuit">安全退出</span>
             <div class="cirle-box">
@@ -71,11 +78,6 @@
         <!-- 子路由渲染出口 -->
         <Content class="view">
           <router-view></router-view>
-          <!-- <div class="page">
-            <div class="list-group">
-              <div class="list-group-item" v-for="item in list" :key="item">{{item}}</div>
-            </div>
-          </div>-->
         </Content>
       </Layout>
     </Layout>
@@ -83,7 +85,6 @@
 </template>
 
 <script>
-import VMenu from 'components/module/v-menu'
 import {
   Layout,
   Header,
@@ -109,20 +110,8 @@ export default {
           url: '/home'
         },
         {
-          name: 'page1',
+          name: '测试页',
           url: '/page1'
-        },
-        {
-          name: 'page2',
-          url: '/page2'
-        },
-        {
-          name: 'page3',
-          url: '/page3'
-        },
-        {
-          name: 'page4',
-          url: '/page4'
         }
       ],
       menu1: [
@@ -132,18 +121,8 @@ export default {
           icon: 'ios-navigate'
         },
         {
-          name: 'Option 1',
-          url: '/option1',
-          icon: 'ios-navigate'
-        },
-        {
-          name: 'Option 2',
-          url: '/option2',
-          icon: 'ios-search'
-        },
-        {
           name: '计时器',
-          url: '/option3',
+          url: '/home/timer',
           icon: 'ios-settings'
         }
       ],
@@ -162,56 +141,6 @@ export default {
             {
               name: '比赛列表',
               url: '/home/match-list',
-              icon: 'ios-paper',
-              children: []
-            }
-          ]
-        },
-        {
-          name: '用户管理',
-          url: '/option2',
-          icon: 'ios-paper',
-          children: [
-            {
-              name: '新增用户',
-              url: '/test',
-              icon: 'ios-paper',
-              children: []
-            },
-            {
-              name: '活跃用户',
-              url: '/test',
-              icon: 'ios-paper',
-              children: []
-            },
-            {
-              name: '流失用户',
-              url: '/test',
-              icon: 'ios-paper',
-              children: []
-            },
-            {
-              name: '用户留存',
-              url: '/test',
-              icon: 'ios-paper',
-              children: []
-            }
-          ]
-        },
-        {
-          name: '统计分析',
-          url: '/option3',
-          icon: 'ios-paper',
-          children: [
-            {
-              name: '活跃分析',
-              url: '/test',
-              icon: 'ios-paper',
-              children: []
-            },
-            {
-              name: '时段分析',
-              url: '/test',
               icon: 'ios-paper',
               children: []
             }
@@ -242,7 +171,7 @@ export default {
   },
   watch: {
     '$store.token'() {
-      console.log('ok123')
+      console.log('token')
     }
   },
   mounted() {},
@@ -293,8 +222,7 @@ export default {
     Content,
     Menu,
     MenuItem,
-    Submenu,
-    VMenu
+    Submenu
   }
 }
 </script>
@@ -335,7 +263,7 @@ export default {
     .layout-header-bar
       position: fixed
       top: 0
-      z-index: 1
+      z-index: 9
       display: flex
       align-items: center
       padding: 0
@@ -370,43 +298,48 @@ export default {
           font-size: $font-size-large
           font-weight: 600
           color: $warning-color
+      .nav a
+        display: block
+        padding: 0 20px
+        height: 100%
+        color: $text-color
+        &:hover
+          color: $link-color
+          border-bottom: 2px solid $link-color
+        &.active
+          color: $link-color
+          border-bottom: 2px solid $link-color
     .view
-      padding-top: 64px
       min-height: 100vh
-      .page
-        margin: 20px
-        background-color: $white
-        .list-group-item
-          line-height: 60px
-.layout-logo-left
-  width: 90%
-  height: 30px
-  background: #5b6270
-  border-radius: 3px
-  margin: 15px auto
-.menu-icon
-  transition: all 0.3s
-.rotate-icon
-  transform: rotate(-90deg)
-.menu-item span
-  display: inline-block
-  overflow: hidden
-  width: 69px
-  text-overflow: ellipsis
-  white-space: nowrap
-  vertical-align: bottom
-  transition: width 0.2s ease 0.2s
-.menu-item i
-  transform: translateX(0px)
-  transition: font-size 0.2s ease, transform 0.2s ease
-  vertical-align: middle
-  font-size: 16px
-.collapsed-menu span
-  width: 0px
-  transition: width 0.2s ease
-.collapsed-menu i
-  transform: translateX(5px)
-  transition: font-size 0.2s ease 0.2s, transform 0.2s ease 0.2s
-  vertical-align: middle
-  font-size: 22px
+  .layout-logo-left
+    width: 90%
+    height: 30px
+    background: #5b6270
+    border-radius: 3px
+    margin: 15px auto
+  .menu-icon
+    transition: all 0.3s
+  .rotate-icon
+    transform: rotate(-90deg)
+  .menu-item span
+    display: inline-block
+    overflow: hidden
+    width: 69px
+    text-overflow: ellipsis
+    white-space: nowrap
+    vertical-align: bottom
+    transition: width 0.2s ease 0.2s
+  .menu-item i
+    transform: translateX(0px)
+    transition: font-size 0.2s ease, transform 0.2s ease
+    vertical-align: middle
+    font-size: 16px
+  .collapsed-menu span
+    width: 0px
+    transition: width 0.2s ease
+  .collapsed-menu i
+    transform: translateX(5px)
+    transition: font-size 0.2s ease 0.2s, transform 0.2s ease 0.2s
+    vertical-align: middle
+    font-size: 22px
 </style>

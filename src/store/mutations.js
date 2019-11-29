@@ -3,7 +3,6 @@ export default {
     state.token = token
   },
   SET_QUIT(state) {
-    // 变更状态
     state.token = ''
   },
   SET_MOBILE: (state, mobile) => {
@@ -12,7 +11,7 @@ export default {
   SET_MATCH_INFO_BASE: (state, matchInfoBase) => {
     state.matchInfoBase = matchInfoBase
   },
-  SET_EXCEL_DATA: (state, excelData) => {
-    state.excelData = excelData
+  SET_PLAYERS_INFO: (state, playersInfo) => {
+    state.playersInfo = playersInfo
   }
 }

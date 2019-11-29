@@ -1,23 +1,29 @@
 <template>
-  <div class="map">
-    <div class="layout-content">Welcome!</div>
+  <div class="timer">
+    <div class="layout-content">timer</div>
   </div>
 </template>
 
 <script>
 export default {
+  name: 'timer',
+  props: {},
   data() {
     return {}
   },
   computed: {},
+  watch: {},
+  mounted() {},
+  created() {},
   methods: {},
+  beforedestroy() {},
   components: {}
 }
 </script>
 
 <style lang="stylus" scoped>
 @import '~common/stylus/variable'
-.map
+.timer
   position: relative
   margin: 0 20px
   padding: 64px 0
