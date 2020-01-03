@@ -44,9 +44,9 @@ export function arrayCompare(propertyName) {
   }
 }
 
+// 事件延迟
 export function debounce(func, delay) {
   let timer
-
   return function (...args) {
     if (timer) {
       clearTimeout(timer)
@@ -54,5 +54,17 @@ export function debounce(func, delay) {
     timer = setTimeout(() => {
       func.apply(this, args)
     }, delay)
+  }
+}
+
+// 锁屏
+export function screenLock(isLock, el) {
+  // 锁屏
+  if (isLock) {
+    el.style.height = '100vh'
+    el.style.overflow = 'hidden'
+  } else {
+    el.style.height = 'auto'
+    el.style.overflow = 'auto'
   }
 }

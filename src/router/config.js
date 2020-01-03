@@ -14,6 +14,7 @@ const Page1 = () => import('components/page1')
 
 // 测试页
 const Test = () => import('components/base/test')
+const PrintView = () => import('components/base/print-view')
 
 const routes = [
   {
@@ -67,6 +68,10 @@ const routes = [
   {
     path: '/test',
     component: Test
+  },
+  {
+    path: '/printView',
+    component: PrintView
   }
 ]
 

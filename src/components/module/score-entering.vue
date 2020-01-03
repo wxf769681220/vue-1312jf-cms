@@ -1,10 +1,10 @@
 <template>
-  <div class="score-entering">
+  <div class="score-entering" v-show="isScoreEntering">
     <div class="tables-wrap">
       <div
         class="tables"
         v-for="(tables,index) in tablesData"
-        :key="tables.tableIndex"
+        :key="index"
         :class="{'high-light': _highLight(tables)}"
         @click="onTables(tables, index)"
       >
@@ -16,7 +16,7 @@
     </div>
 
     <ul class="nav">
-      <li>判罚说明：{{highlightTbales}}</li>
+      <li>判罚说明：</li>
       <li>➢ 一方的“警告”、“违例”、“犯规”、“判负”、“弃权”、“轮空”只能点选其一。</li>
       <li>➢ 点选弃权、轮空，不需录入成绩，积分按2:0 记级:6:0 级差:17:0。</li>
       <li>➢ 2次判负、弃权，应先点判负或弃权，再点取消资格。</li>
@@ -36,13 +36,9 @@
 </template>
 
 <script>
-// body Components
 import TablesScore from 'components/body/tables-score'
-// Script
 import { arrayCompare } from 'common/js/lib'
-// API
 import { setScore } from 'api'
-// Vuex
 import { mapGetters } from 'vuex'
 
 export default {
@@ -69,6 +65,7 @@ export default {
   },
   data() {
     return {
+      isScoreEntering: false,
       roundRecord: [],
       tableIndex: 0,
       roundId: 0,
@@ -82,7 +79,6 @@ export default {
   created() {},
   methods: {
     onTables(tables) {
-      console.log('当前桌数据：', tables)
       this.$refs.tablesScore.show()
       this.roundRecord = tables.roundRecord
       if (tables.roundRecord.length < 4) {
@@ -117,17 +113,17 @@ export default {
       this.currentTablesScore = []
     },
     _getCurrentTablesScore() {
+      console.log('请问!', this.scoreData)
       // 获取当前桌4名选手成绩
       let resultFilter = this.scoreData.filter(item => {
-        if (item.roundId === this.roundId) {
-          return item
-        }
+        return (item.roundId === this.roundId)
       })
       // 判断该4名选手成绩是否已录入
       let everyResult = resultFilter.every(item => {
         return (item.isFilled === false)
       })
       if (everyResult) {
+        this.$refs.tablesScore.onTablesScoreCancel()
         console.log('当前桌成绩未导入!')
       } else {
         console.log('当前桌成绩已导入!')
@@ -145,6 +141,12 @@ export default {
         this.isHighLight = false
       }
       return this.isHighLight
+    },
+    show() {
+      this.isScoreEntering = true
+    },
+    hide() {
+      this.isScoreEntering = false
     }
   },
   components: {
@@ -156,6 +158,8 @@ export default {
 <style lang="stylus" scoped>
 @import '~common/stylus/variable'
 .score-entering
+  width: 1200px
+  margin: 0 auto
   .tables-wrap
     display: flex
     flex-wrap: wrap

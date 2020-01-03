@@ -1,85 +1,63 @@
 <template>
-  <div class="match-enroll">
+  <div class="match-enroll" ref="matchEnrollHook">
     <div class="layout-content">
       <!-- 工具栏 -->
       <div class="content-inline justify-content-between">
         <h2>
           {{matchInfoBase.name}}
-          <Icon
-            class="ml-3"
-            type="ios-keypad"
-            size="24"
-            color="#2d8cf0"
-            v-show="isMatchInfo"
-            @click="showMatchInfo"
-          />
+          <Icon class="ml-3" type="ios-keypad" size="24" color="#2d8cf0" v-show="isMatchInfo" @click="showMatchInfo" />
         </h2>
-        <toolbars
-          :isUpload="true"
-          :isAdd="true"
-          :isDelete="true"
-          @upload="upload"
-          @refresh="refresh"
-          @return="goBack"
-          @addNew="addNew"
-          @deleteX="deleteX"
-        ></toolbars>
+        <toolbars :isUpload="true" :isAdd="true" :isDelete="true" @upload="upload" @refresh="refresh" @return="goBack" @addNew="addNew" @deleteX="deleteX"></toolbars>
       </div>
 
       <!--比赛基本信息 -->
       <match-info class="mt-3" ref="matchInfo" :matchInfoBase="matchInfoBase" @hideIcon="hideIcon"></match-info>
 
       <!-- 导入报名表 -->
-      <upload-table
-        ref="uploadTable"
-        :matchId="matchInfoBase.id"
-        :matchType="matchInfoBase.rule"
-        @upload-ok="uploaded"
-      ></upload-table>
+      <upload-table ref="uploadTable" :matchId="matchInfoBase.id" :matchType="matchInfoBase.rule" @upload-ok="uploaded"></upload-table>
 
       <!-- 渲染报名表 -->
-      <div class="mt-5" v-if="tableData.length">
-        <div class="content-inline justify-content-between">
+      <div class="mt-5">
+        <div class="content-inline justify-content-between mb-3">
           <div>
             <Button @click="handleSelectAll(true)">全选</Button>
             <Button class="ml-2" @click="handleSelectAll(false)">取消全选</Button>
+            <Button class="ml-2" type="success" :disabled="tableData.length < 4 || enoughSign || isDisabledRandomEnrollNum" @click="startMatch">开始比赛</Button>
             <Button
               class="ml-2"
               type="success"
-              :disabled="tableData.length < 4 || enoughSign ? true : false"
-              @click="startMatch"
-            >开始比赛</Button>
-            <Button class="ml-2" type="success">开始签到</Button>
-          </div>
-          <div>
-            <Button
-              type="primary"
-              @click="onRandomEnrollNum"
-              :disabled="isDisabledRandomEnrollNum"
-              v-if="Boolean(matchInfoBase.needSignIn)"
-            >随机分配</Button>
+              v-if="matchInfoBase.needSignIn"
+              v-text="matchInfoBase.status === 5 ? '签到已开始' : '签到未开始'"
+              :disabled="matchInfoBase.status === 5"
+              @click="onSignStart"
+            ></Button>
             <Button
               class="ml-2"
-              type="warning"
-              @click="onSignTable"
-              v-if="Boolean(matchInfoBase.needSignIn)"
-            >签名列表</Button>
+              type="primary"
+              v-if="matchInfoBase.needSignIn"
+              :disabled="isDisabledRandomEnrollNum"
+              @click="onRandomEnrollNum"
+            >随机分配</Button>
+          </div>
+          <div v-if="matchInfoBase.needSignIn">
+            <Button type="warning" @click="onSignTable">签名表</Button>
+            <Button class="ml-2" type="warning" @click="onEnrollVerifyTable">报名审核表</Button>
           </div>
         </div>
+        <!-- 报名表 -->
         <Table
-          class="mt-3"
           border
           ref="selection"
           :stripe="true"
           :columns="tableColumns"
           :data="tableData"
-          :row-class-name="rowClassName"
+          :row-class-name="_rowClassName"
           @on-select="selectedItem"
           @on-select-cancel="cancelItem"
           @on-select-all="selectedAll"
           @on-select-all-cancel="cancelAll"
         >
-          <template slot-scope="{ row }" slot="sign" style="width: 0 !important">
+          <template slot-scope="{ row }" slot="sign">
             <span>{{ row.userName }}</span>
           </template>
           <template slot-scope="{ row, column, index }" slot="action">
@@ -87,90 +65,72 @@
               class="mr-1"
               type="success"
               size="small"
-              v-if="matchInfoBase.needSignIn === 1"
+              v-if="matchInfoBase.needSignIn"
               :disabled="row.isSignIn"
               @click="sign(row, column, index)"
-            >{{row.isSignIn ? '已签到' : '未签到'}}</Button>
+            >
+              {{row.isSignIn ? '已签到' : '未签到'}}
+            </Button>
             <Button class="mr-1" type="primary" size="small" @click="modify(row, column, index)">修改</Button>
-            <Button type="error" size="small" @click="remove(row, column, index)">删除</Button>
+            <Button class="mr-1" type="error" size="small" @click="remove(row, column, index)">删除</Button>
           </template>
         </Table>
       </div>
 
       <!-- 签名表 -->
-      <sign-table ref="signTable" :matchType="matchInfoBase.rule" :data="tableData"></sign-table>
+      <sign-table
+        ref="signTable"
+        :matchType="matchInfoBase.rule"
+        :data="tableData"
+        @screen-lock="screenLock(true)"
+        @screen-free="screenLock(false)"
+      ></sign-table>
+      <!-- 报名审核列表 -->
+      <verify-table
+        ref="verifyTable"
+        :matchType="matchInfoBase.rule"
+        @refresh="getNewData"
+        @screen-lock="screenLock(true)"
+        @screen-free="screenLock(false)"
+      ></verify-table>
 
       <!-- 新增数据 -->
       <enroll-add ref="enrollAdd" @enrollAddConfirm="enrollAddConfirm"></enroll-add>
 
       <!-- 修改数据 -->
-      <enroll-modify
-        ref="enrollModify"
-        :data="modifyData"
-        @enrollModifyConfirm="enrollModifyConfirm"
-      ></enroll-modify>
+      <enroll-modify ref="enrollModify" :data="modifyData" @enrollModifyConfirm="enrollModifyConfirm"></enroll-modify>
 
       <!-- 删除数据 -->
-      <modal
-        class-name="vertical-center-modal"
-        title="删除数据"
-        v-model="modalDelete"
-        @on-ok="deleteConfirm"
-        @on-cancel="onDeleteCancel"
-      >
+      <modal class-name="vertical-center-modal" title="删除数据" v-model="modalDelete" @on-ok="deleteConfirm" @on-cancel="onDeleteCancel">
         <div v-if="selected.length && selected.length <= 10">
           <Table :columns="tableColumns2" :data="deleteList[0]"></Table>
         </div>
         <div v-if="selected.length > 10">
           <p>
-            <Icon class="mr-2" type="md-information-circle" color="orange"/>您确定要删除所有打钩的数据吗？
+            <Icon class="mr-2" type="md-information-circle" color="orange" />您确定要删除所有打钩的数据吗？
           </p>
         </div>
       </modal>
 
       <!-- 签到 -->
-      <modal
-        class="signer"
-        class-name="vertical-center-modal"
-        title="签到信息"
-        v-model="modalSign"
-        @on-ok="signConfirm"
-        @on-cancel="signCancel"
-      >
+      <modal class="signer" class-name="vertical-center-modal" title="签到信息" v-model="modalSign" @on-ok="signConfirm" @on-cancel="signCancel">
         <div class="content-inline py-1">
           <span class="lab">选手：</span>
           <span>{{signInfo.realName}}</span>
         </div>
         <div class="content-inline py-1">
           <label class="lab" for="inputControlSign">签到人：</label>
-          <input
-            class="input-control px-1"
-            id="inputControlSign"
-            type="text"
-            v-model="signInfo.signName"
-            style="width: 120px"
-          >
+          <input class="input-control px-1" id="inputControlSign" type="text" v-model="signInfo.signName" style="width: 120px">
         </div>
       </modal>
 
       <!-- 随机分配 -->
-      <modal
-        class-name="vertical-center-modal"
-        title="随机分配"
-        v-model="modalRandomEnrollNum"
-        @on-ok="randomEnrollNumConfirm"
-      >
+      <modal class-name="vertical-center-modal" title="随机分配" v-model="modalRandomEnrollNum" @on-ok="randomEnrollNumConfirm">
         <p>随机分配会重新分配选手号, 是否确认?</p>
       </modal>
 
       <!-- 开始比赛 -->
-      <modal
-        class-name="vertical-center-modal"
-        title="设置比赛规则"
-        v-model="modalStartMatch"
-        footer-hide
-        @on-cancel="startMatchCancel"
-      >
+      <modal class-name="vertical-center-modal" title="设置比赛规则" v-model="modalStartMatch" footer-hide @on-cancel="startMatchCancel">
         <div class="content-inline">
           <span>积分编排：</span>
           <InputNumber :max="10" :min="1" v-model="matchRules.totalRounds"></InputNumber>
@@ -186,12 +146,7 @@
         </div>
         <div class="content-inline mt-3">
           <span>同地区不相遇：</span>
-          <i-switch
-            size="large"
-            true-color="#13ce66"
-            false-color="#ff4949"
-            v-model="matchRules.sameArea"
-          >
+          <i-switch size="large" true-color="#13ce66" false-color="#ff4949" v-model="matchRules.sameArea">
             <span slot="open">开启</span>
             <span slot="close">关闭</span>
           </i-switch>
@@ -204,13 +159,7 @@
         </div>
         <p class="text-error my-3" v-if="errorsMsg" v-text="errorsMsg"></p>
         <div class="pt-3 mt-3" style="border-top:1px solid #e8eaec">
-          <Button
-            class="btn-match-start"
-            type="success"
-            size="large"
-            :disabled="matchRules.sameArea ? !matchRules.totalRounds || !matchRules.startRound || !matchRules.endRound : matchRules.sameArea"
-            @click="startMatchConfirm"
-          >开始比赛</Button>
+          <Button class="btn-match-start" type="success" size="large" :disabled="matchRules.sameArea ? !matchRules.totalRounds || !matchRules.startRound || !matchRules.endRound : matchRules.sameArea" @click="startMatchConfirm">开始比赛</Button>
         </div>
       </modal>
     </div>
@@ -218,65 +167,37 @@
 </template>
 
 <script>
-// Iview Components
-import {
-  Table,
-  Button,
-  Icon,
-  modal,
-  InputNumber,
-  RadioGroup,
-  Radio
-} from 'view-design'
-// Module Components
+import { Table, Button, Icon, modal, InputNumber, RadioGroup, Radio } from 'view-design'
 import Toolbars from 'components/module/toolbars'
 import MatchInfo from 'components/module/match-info'
-import signTable from 'components/module/sign-table'
-// Body Components
+import SignTable from 'components/module/sign-table'
+import VerifyTable from 'components/module/verify-table'
 import UploadTable from 'components/body/upload-table'
 import EnrollAdd from 'components/body/enroll-add'
 import EnrollModify from 'components/body/enroll-modify'
-
-// Script
-import { arraySubGroup } from 'common/js/lib'
-// Vuex
+import { getVerifyStatus } from 'common/js/utils'
+import { arraySubGroup, screenLock } from 'common/js/lib'
 import { mapGetters, mapMutations } from 'vuex'
-// API
 import {
   readInEnrollInfo,
   getEnrollInfo,
-  getEnrollInfoFromMobile,
   deleteEnrollInfo,
   modifyEnrollInfo,
   setMatchRules,
   matchStart,
   signIn,
   randomEnrollNum,
-  getMatch
+  getMatch,
+  signStart
 } from 'api'
 
 export default {
   name: 'match-enroll',
   inject: ['reload'],
-  props: {},
   data() {
     return {
-      tableColumnsShow: [
-        'selection',
-        'teamNo',
-        'teamName',
-        'enrollNum',
-        'realName',
-        'idNumber',
-        'phone',
-        'region',
-        'preparer',
-        'preparerPhone',
-        'remark',
-        'sign',
-        'action'
-      ],
       tableColumns: [],
+      tableData: [],
       tableColumns2: [
         {
           title: 'UID',
@@ -291,7 +212,6 @@ export default {
           key: 'realName'
         }
       ],
-      tableData: [],
       selected: [],
       modifyData: {},
       signInfo: {
@@ -312,6 +232,7 @@ export default {
       modalRandomEnrollNum: false,
       modalDelete: false,
       modalSign: false,
+      modalEnrollVerify: false,
       isMatchInfo: false
     }
   },
@@ -341,8 +262,8 @@ export default {
       }
     },
     enoughSign() {
-      // 若开启签到功能, 低于4个签到不能开赛
       let disabled = false
+      // 若开启签到功能, 低于4个签到不能开赛
       if (this.matchInfoBase.needSignIn) {
         let arr = this.tableData.filter(item => {
           return item.isSignIn === true
@@ -425,75 +346,61 @@ export default {
       }
     }
   },
-  mounted() {},
+  mounted() {
+    console.log('创建比赛信息：', this.matchInfoBase)
+  },
   created() {
-    console.log('比赛基本信息：', this.matchInfoBase)
-    // 1.从报名表中获取信息
-    this.getReadInData()
-    // 2.从手机端获取报名信息
-    // this.getEnrollInfoFromMobile()
-    // 初始化表头列
     this._initTableColumns()
+    // 从报名表中获取信息
+    this.getReadInData()
   },
   methods: {
-    // 获取本场比赛基本信息
+    // 1.获取本场比赛基本信息
     ...mapMutations({
       setMatchInfoBase: 'SET_MATCH_INFO_BASE'
     }),
-    // 初始化表头（显示）
+    // 1.初始化表头
     _initTableColumns() {
-      // 若没有开启签到功能, 则表格不渲染签到列
-      if (!this.matchInfoBase.needSignIn) {
-        this.tableColumnsShow = [
-          'selection',
-          'teamNo',
-          'teamName',
-          'enrollNum',
-          'realName',
-          'idNumber',
-          'phone',
-          'region',
-          'preparer',
-          'preparerPhone',
-          'remark',
-          'action'
-        ]
-        // 若是单人赛或双人赛则不渲染队伍号与队伍名称
-        if (this.matchInfoBase.rule === 0 || this.matchInfoBase.rule === 2) {
-          this.tableColumnsShow = [
-            'selection',
-            'enrollNum',
-            'realName',
-            'idNumber',
-            'phone',
-            'region',
-            'preparer',
-            'preparerPhone',
-            'remark',
-            'action'
-          ]
-        }
-      } else {
-        // 若开启签到功能, 则表格渲染签到列, 若是单人赛或双人赛则不渲染队伍号与队伍名称
-        if (this.matchInfoBase.rule === 0 || this.matchInfoBase.rule === 2) {
-          this.tableColumnsShow = [
-            'selection',
-            'enrollNum',
-            'realName',
-            'idNumber',
-            'phone',
-            'region',
-            'preparer',
-            'preparerPhone',
-            'remark',
-            'sign',
-            'action'
-          ]
-        }
+      this.initColumns = [
+        'selection',
+        'teamNo',
+        'teamName',
+        'enrollNum',
+        'realName',
+        'idNumber',
+        'phone',
+        'region',
+        'preparer',
+        'preparerPhone',
+        'remark',
+        'sign',
+        'action'
+      ]
+      // 单人或双人赛不显示队伍信息
+      if (this.matchInfoBase.rule === 0 || this.matchInfoBase.rule === 2) {
+        this.initColumns.forEach((item, index) => {
+          if (item === 'teamNo') {
+            this.initColumns.splice(index, 1)
+          }
+        })
+        this.initColumns.forEach((item, index) => {
+          if (item === 'teamName') {
+            this.initColumns.splice(index, 1)
+          }
+        })
       }
+      // 签到关闭
+      if (!this.matchInfoBase.needSignIn) {
+        this.initColumns.forEach((item, index) => {
+          if (item === 'sign') {
+            this.initColumns.splice(index, 1)
+          }
+        })
+      }
+      console.log('初始化表头：', this.initColumns)
       this.tableColumns = this._getTableColumns()
     },
-    // 初始化表头（数据）
+    // 2.初始化表头数据
     _getTableColumns() {
       const tableColumnsList = {
         selection: {
@@ -552,37 +459,31 @@ export default {
         remark: {
           title: '备注',
           key: 'remark',
-          width: 'auto',
+          width: '100px',
           resizable: true,
           tooltip: true
         },
         sign: {
           title: '签到人',
           slot: 'sign',
-          width: '100px'
+          width: '140px'
         },
         action: {
           title: '操作',
           slot: 'action',
-          width: '200px'
+          width: 'auto'
         }
       }
       let data = []
-      this.tableColumnsShow.forEach(col => data.push(tableColumnsList[col]))
+      this.initColumns.forEach(col => data.push(tableColumnsList[col]))
       return data
     },
-    // 获取手机端报名表数据
-    getEnrollInfoFromMobile() {
-      getEnrollInfoFromMobile('', {
-        matchId: this.matchInfoBase.id
-      }).then(res => {
-        console.log('手机端报名表数据：', res)
+    // 2.获取本场比赛基本信息
+    _getMatchById() {
+      getMatch(`/${this.matchInfoBase.id}`).then(res => {
         if (res.code === 200) {
-          if (!res.verifyList.length) {
-            this.$Message.warning('暂无数据!')
-            return
-          }
-          this.tableData = res.verifyList
+          let data = res.match
+          this.setMatchInfoBase(data)
         }
       })
     },
@@ -616,6 +517,7 @@ export default {
         this.tableData = excelData
         // 报名表信息写入数据库
         this.readInData(excelData)
+        this.reload()
       }
     },
     // excel报名表数据写入数据库
@@ -636,12 +538,25 @@ export default {
     // 获取已经写入数据库的excel报名表信息
     getReadInData() {
       getEnrollInfo(`/${this.matchInfoBase.id}`).then(res => {
+        console.log('获取数据库中的excel报名表信息：', res)
         if (res.code === 200) {
           this.tableData = res.users
         }
       })
     },
     // 确认签到
+    onSignStart() {
+      signStart('', {
+        matchId: this.matchInfoBase.id
+      }).then(res => {
+        console.log('签到开始：', res)
+        if (res.code === 200) {
+          this.$Message.success('签到已开始!')
+          // 重置2 vuex SET_MATCH_INFO_BASE
+          this._getMatchById()
+        }
+      })
+    },
     onSignTable() {
       this.$refs.signTable.show()
     },
@@ -649,7 +564,9 @@ export default {
       this.signInfo.signName = ''
     },
     sign(row, column, index) {
-      if (row.isSignIn) {
+      console.log(row)
+      if (this.matchInfoBase.status !== 5) {
+        this.$Message.error('签到尚未开始，无法进行此项操作!')
         return
       }
       this.signInfo.usersId = row.id
@@ -660,9 +577,10 @@ export default {
     signConfirm() {
       signIn('', {
         id: this.signInfo.usersId,
-        userName: this.signInfo.signName
+        userName: this.signInfo.signName,
+        matchId: this.matchInfoBase.id
       }).then(res => {
-        // console.log(res)
+        console.log('签到：', res)
         if (res.code === 200) {
           this.$Message.success('签到成功!')
           this.signInfo.signName = ''
@@ -676,13 +594,23 @@ export default {
     },
     randomEnrollNumConfirm() {
       randomEnrollNum(`/${this.matchInfoBase.id}`).then(res => {
-        // console.log(res)
+        console.log(res)
         if (res.code === 200) {
           this.$Message.success('选手号随机分配成功!')
           // 数据重载
           this.getReadInData()
         }
       })
+    },
+    // 报名审核列表
+    onEnrollVerifyTable() {
+      this.$refs.verifyTable.show()
+    },
+    _verifyStatus(val) {
+      return getVerifyStatus(val)
+    },
+    getNewData() {
+      this.getReadInData()
     },
     // 新增数据
     addNew() {
@@ -691,7 +619,8 @@ export default {
     enrollAddConfirm(data) {
       data.matchId = this.matchInfoBase.id
       data.status = 0
-      this.readInData(data)
+      let arr = [data]
+      this.readInData(arr)
       this.$refs.enrollAdd.hide()
     },
     // 删除数据
@@ -725,6 +654,8 @@ export default {
         if (res.code === 200) {
           this.$Message.success('数据删除成功!')
           this.getReadInData()
+          // 删除数据成功后审核表数据需要重新载入
+          this.$refs.verifyTable.getEnrollInfoFromMobile()
         }
       })
     },
@@ -744,6 +675,8 @@ export default {
         if (res.code === 200) {
           this.$Message.success('数据修改成功!')
           this.getReadInData()
+          // 修改数据成功后审核表数据需要重新载入
+          this.$refs.verifyTable.getEnrollInfoFromMobile()
         }
       })
       this.$refs.enrollModify.hide()
@@ -791,26 +724,26 @@ export default {
         // console.log(res)
         if (res.code === 200) {
           this.$Message.success('比赛已经开始了!')
-          this._getMatchById()
           this.modalStartMatch = false
-          this.$nextTick(() => {
+          // 重置1 vuex SET_MATCH_INFO_BASE
+          this._getMatchById()
+          // 延迟跳转,确保vuex中matchInfoBase状态已更新
+          this.timer = setTimeout(() => {
             this.$router.push({
               path: `/home/match-entry/${this.matchInfoBase.id}`
             })
-          })
-        }
-      })
-    },
-    _getMatchById() {
-      getMatch(`/${this.matchInfoBase.id}`).then(res => {
-        if (res.code === 200) {
-          let data = res.match
-          this.setMatchInfoBase(data)
+          }, 1000)
         }
       })
     },
     startMatchCancel() {
       this._initMatchRules()
+    },
+    // 锁屏 & 释放屏幕
+    screenLock(lock) {
+      this.$nextTick(() => {
+        return screenLock(lock, this.$refs.matchEnrollHook)
+      })
     },
     // html元素状态管理
     showMatchInfo() {
@@ -835,7 +768,7 @@ export default {
     handleSelectAll(status) {
       this.$refs.selection.selectAll(status)
     },
-    rowClassName(row) {
+    _rowClassName(row) {
       if (row.isSignIn) {
         return 'sign'
       }
@@ -847,8 +780,10 @@ export default {
     // 页面刷新
     refresh() {
       this.reload()
-      this.$Message.success('页面已刷新!')
     }
+  },
+  beforeDestroy() {
+    this.timer = null
   },
   components: {
     MatchInfo,
@@ -856,7 +791,8 @@ export default {
     UploadTable,
     EnrollAdd,
     EnrollModify,
-    signTable,
+    SignTable,
+    VerifyTable,
     Table,
     Button,
     Icon,

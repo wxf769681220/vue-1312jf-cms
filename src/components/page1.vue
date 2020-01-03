@@ -1,22 +1,19 @@
 <template>
-  <div class="page1">
-    <Table :columns="columns14" :data="data5" border :span-method="handleSpan"></Table>
+  <div class="test">
+    <div class="box">
+      <Table border :stripe="true" :columns="columns" :data="data1"></Table>
+    </div>
   </div>
 </template>
 
 <script>
-// Iview Components
 import { Table } from 'view-design'
 export default {
-  name: 'page1',
+  name: 'test',
   props: {},
   data() {
     return {
-      columns14: [
-        {
-          title: 'Date',
-          key: 'date'
-        },
+      columns: [
         {
           title: 'Name',
           key: 'name'
@@ -30,7 +27,7 @@ export default {
           key: 'address'
         }
       ],
-      data5: [
+      data1: [
         {
           name: 'John Brown',
           age: 18,
@@ -42,6 +39,18 @@ export default {
           age: 24,
           address: 'London No. 1 Lake Park',
           date: '2016-10-01'
+        },
+        {
+          name: 'Joe Black',
+          age: 30,
+          address: 'Sydney No. 1 Lake Park',
+          date: '2016-10-02'
+        },
+        {
+          name: 'Jon Snow',
+          age: 26,
+          address: 'Ottawa No. 2 Lake Park',
+          date: '2016-10-04'
         }
       ]
     }
@@ -50,27 +59,16 @@ export default {
   watch: {},
   mounted() {},
   created() {},
-  methods: {
-    handleSpan({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 0 && columnIndex === 0) {
-        return {
-          rowspan: 2,
-          colspan: 1
-        }
-      } else if (rowIndex === 1 && columnIndex === 0) {
-        return {
-          rowspan: 0,
-          colspan: 0
-        }
-      }
-    }
-  },
+  methods: {},
+  beforedestroy() {},
   components: {
     Table
-  },
-  beforedestroy() {}
+  }
 }
 </script>
 
 <style lang="stylus" scoped>
+@import '~common/stylus/media'
+.box
+  background-color: grey
 </style>

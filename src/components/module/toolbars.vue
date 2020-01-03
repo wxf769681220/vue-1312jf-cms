@@ -4,8 +4,6 @@
       <Button type="primary" v-show="isUpload" :size="buttonSize" @click="onUpload">导入报名表</Button>
       <Button type="warning" v-show="isAdd" :size="buttonSize" @click="onAddNew">新增</Button>
       <Button type="error" v-show="isDelete" :size="buttonSize" @click="onDelete">删除</Button>
-      <Button type="success" v-show="isSeatChange" :size="buttonSize" @click="onSeatChange">换座</Button>
-      <Button type="error" v-show="isTablesSort" :size="buttonSize" @click="onTablesSort">排序</Button>
       <Button type="warning" v-show="isPrint" :size="buttonSize" @click="onPrint">打印</Button>
       <Button type="error" v-show="isDownload" :size="buttonSize" @click="onDownload">下载</Button>
       <Button type="info" v-show="isRefresh" :size="buttonSize" @click="onRefresh">刷新</Button>
@@ -48,14 +46,6 @@ export default {
     isDelete: {
       type: Boolean,
       default: false
-    },
-    isSeatChange: {
-      type: Boolean,
-      default: false
-    },
-    isTablesSort: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
@@ -88,12 +78,6 @@ export default {
     },
     onDelete() {
       this.$emit('deleteX')
-    },
-    onSeatChange() {
-      this.$emit('seatChange')
-    },
-    onTablesSort() {
-      this.$emit('tablesSort')
     }
   },
   beforedestroy() {},

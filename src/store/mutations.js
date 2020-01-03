@@ -13,5 +13,8 @@ export default {
   },
   SET_PLAYERS_INFO: (state, playersInfo) => {
     state.playersInfo = playersInfo
+  },
+  SET_PRINT_DATA: (state, printData) => {
+    state.printData = printData
   }
 }

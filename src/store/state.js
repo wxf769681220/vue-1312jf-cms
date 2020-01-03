@@ -3,7 +3,8 @@ const state = sessionStorage.getItem('state') ? JSON.parse(sessionStorage.getIte
   token: '',
   mobile: '',
   matchInfoBase: {},
-  playersInfo: []
+  playersInfo: [],
+  printData: null
 }
 
 export default state

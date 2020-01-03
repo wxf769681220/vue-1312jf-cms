@@ -23,30 +23,27 @@
           </div>
         </validation-provider>
 
-        <!-- 比赛时间 -->
-        <div class="form-group">
-          <div class="content-inline">
-            <label class="label">比赛时间：</label>
-            <validation-provider
-              name="startTime"
-              tag="div"
-              rules="required|startTime"
-              v-slot="{ errors }"
-            >
-              <div class="content-inline">
-                <DatePicker type="datetime" v-model="match.startTime" :options="disabledTime" placeholder="开始时间"></DatePicker>
-                <div class="error-tip" v-show="errors.length">{{ errors[0] }}</div>
-              </div>
-            </validation-provider>
-            <Icon class="mx-3" type="md-infinite" size="16"/>
-            <validation-provider tag="div" rules="required|endTime:startTime" v-slot="{ errors }">
-              <div class="content-inline">
-                <DatePicker type="datetime" v-model="match.endTime" :options="disabledTime" placeholder="结束时间"></DatePicker>
-                <div class="error-tip" v-show="errors.length">{{ errors[0] }}</div>
-              </div>
-            </validation-provider>
+        <!-- 开始时间 -->
+        <validation-provider class="form-group" name="startTime" tag="div" rules="required|startTime" v-slot="{ errors }">
+          <div class="input-group">
+            <label class="label">开始时间：</label>
+            <div class="content-inline">
+              <DatePicker type="datetime" v-model="match.startTime" :options="disabledTime" placeholder="开始时间"></DatePicker>
+              <div class="error-tip" v-show="errors.length">{{ errors[0] }}</div>
+            </div>
           </div>
-        </div>
+        </validation-provider>
+
+        <!-- 结束时间 -->
+        <validation-provider class="form-group" tag="div" rules="required|endTime:startTime" v-slot="{ errors }">
+          <div class="input-group">
+            <label class="label">结束时间：</label>
+            <div class="content-inline">
+              <DatePicker type="datetime" v-model="match.endTime" :options="disabledTime" placeholder="结束时间"></DatePicker>
+              <div class="error-tip" v-show="errors.length">{{ errors[0] }}</div>
+            </div>
+          </div>
+        </validation-provider>
 
         <!-- 联系人 -->
         <div class="form-group">
@@ -59,11 +56,11 @@
                 </div>
               </div>
             </validation-provider>
-            <Icon class="mx-3" type="md-infinite" size="16"/>
+            <Icon class="mx-3" type="md-infinite" size="16" />
             <validation-provider rules="required" v-slot="{ errors }">
               <div class="input-group">
                 <div class="input-wrap diff">
-                  <input class="input-control" type="text" v-model="match.contactsPhone">
+                  <input class="input-control" type="text" placeholder="电话" v-model="match.contactsPhone">
                 </div>
               </div>
             </validation-provider>
@@ -81,11 +78,11 @@
                 </div>
               </div>
             </validation-provider>
-            <Icon class="mx-3" type="md-infinite" size="16"/>
+            <Icon class="mx-3" type="md-infinite" size="16" />
             <validation-provider rules="required" v-slot="{ errors }">
               <div class="input-group">
                 <div class="input-wrap diff">
-                  <input class="input-control" type="text" v-model="match.judgePhone">
+                  <input class="input-control" type="text" placeholder="电话" v-model="match.judgePhone">
                 </div>
               </div>
             </validation-provider>
@@ -103,18 +100,18 @@
                 </div>
               </div>
             </validation-provider>
-            <Icon class="mx-3" type="md-infinite" size="16"/>
+            <Icon class="mx-3" type="md-infinite" size="16" />
             <validation-provider rules="required" v-slot="{ errors }">
               <div class="input-group">
                 <div class="input-wrap diff">
-                  <input class="input-control" type="text" v-model="match.recorderPhone">
+                  <input class="input-control" type="text" placeholder="电话" v-model="match.recorderPhone">
                 </div>
               </div>
             </validation-provider>
           </div>
         </div>
 
-        <Divider dashed/>
+        <Divider dashed />
 
         <!-- 比赛类型 -->
         <div class="form-group">
@@ -151,24 +148,14 @@
             <Checkbox label="累进分" border></Checkbox>
             <Checkbox label="对手分" border></Checkbox>
           </CheckboxGroup>
-          <Alert
-            class="inline-block my-3 text-error"
-            type="error"
-            show-icon
-            v-if="errors"
-          >错误提示：{{errors}}</Alert>
+          <Alert class="inline-block my-3 text-error" type="error" show-icon v-if="errors">错误提示：{{errors}}</Alert>
         </div>
 
-        <!-- 是否含签到功能 -->
+        <!-- 电子签到 -->
         <div class="form-group">
           <div class="input-group">
-            <label class="label">签到功能：</label>
-            <i-switch
-              size="large"
-              true-color="#13ce66"
-              false-color="#ff4949"
-              v-model="match.needSignIn"
-            >
+            <label class="label">电子签到：</label>
+            <i-switch size="large" true-color="#13ce66" false-color="#ff4949" v-model="match.needSignIn">
               <span slot="open">开启</span>
               <span slot="close">关闭</span>
             </i-switch>
@@ -176,14 +163,19 @@
           </div>
         </div>
 
-        <!-- 登录按钮 -->
-        <Button
-          class="btn-create"
-          type="primary"
-          :long="true"
-          :disabled="newRegionRule === '2' ? !valid || !match.orderRule.length || (errors !== '') : !valid"
-          @click="onCreateMatch"
-        >
+        <!-- 手机端报名 -->
+        <div class="form-group" v-if="match.needSignIn">
+          <div class="input-group">
+            <label class="label">手机端报名：</label>
+            <i-switch size="large" true-color="#13ce66" false-color="#ff4949" v-model="match.needEnroll">
+              <span slot="open">开启</span>
+              <span slot="close">关闭</span>
+            </i-switch>
+          </div>
+        </div>
+
+        <!-- 创建 -->
+        <Button class="btn-create" type="primary" :long="true" :disabled="newRegionRule === '2' ? !valid || !match.orderRule.length || (errors !== '') : !valid" @click="onCreateMatch">
           <span>立即创建</span>
         </Button>
       </ValidationObserver>
@@ -192,7 +184,6 @@
 </template>
 
 <script>
-// Iview Components
 import {
   Icon,
   Button,
@@ -204,12 +195,9 @@ import {
   CheckboxGroup,
   Checkbox
 } from 'view-design'
-// ES6+ Add a rule.
 import { ValidationObserver, ValidationProvider, extend } from 'vee-validate'
 import { required } from 'vee-validate/dist/rules'
-// Script
 import { orderRuleChange } from 'common/js/utils'
-// API
 import { createMatch } from 'api'
 
 export default {
@@ -217,7 +205,7 @@ export default {
   data() {
     return {
       match: {
-        name: '2019"柔和双沟杯"世界掼蛋大赛无锡站',
+        name: 'WXF测试',
         location: '喜来乐国际大酒店',
         startTime: '',
         endTime: '',
@@ -229,8 +217,9 @@ export default {
         recorderPhone: '12345678903',
         rule: 0, // 0：单人赛 1：团体赛 2：双人赛
         regionRule: 0, // 0：社体规则 1：国家规则 2：自定义规则
-        needSignIn: false,
-        orderRule: []
+        needSignIn: false, // true: 开启 false ：关闭
+        orderRule: [], // 总积分 胜轮数 级差分 升级数 去首累进分 累进分 对手分
+        needEnroll: false // true: 开启手机端保报名 false ：关闭
       },
       disabledTime: {
         disabledDate(date) {
@@ -279,6 +268,9 @@ export default {
   watch: {
     'match.regionRule'(value) {
       this.match.orderRule = []
+    },
+    'match.needSignIn'(value) {
+      this.match.needEnroll = false
     }
   },
   created() {
@@ -366,7 +358,7 @@ export default {
     .label
       display: inline-block
       padding: 0 10px
-      width: 100px
+      width: 120px
       text-align: right
   .error-tip
     margin-left: 8px

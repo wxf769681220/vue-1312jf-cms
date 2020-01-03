@@ -50,12 +50,9 @@
 </template>
 
 <script>
-// Iview Components
 import { Icon, Button } from 'view-design'
-// Script
-import moment from 'moment'
 import { getMatchTypeString, matchStatusChange, btnTypeChange } from 'common/js/utils'
-// Vuex
+import moment from 'moment'
 import { mapMutations } from 'vuex'
 
 export default {

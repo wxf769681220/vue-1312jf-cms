@@ -41,7 +41,7 @@
           </div>
           <div class="col">
             <span class="lab">比赛规则：</span>
-            <span class>{{matchRule}}</span>
+            <span class>{{matchInfoBase.regionRule === 0 ? '社体规则（普通）' : '团体规则（淮安）'}}</span>
           </div>
         </div>
         <div class="list-group-item content-inline">
@@ -58,18 +58,19 @@
             </span>
           </div>
           <div class="col">
-            <span class="lab">签到功能：</span>
-            <span class>{{matchSignIn}}</span>
+            <span class="lab">电子签到：</span>
+            <span class>{{matchInfoBase.needSignIn ? '开启' : '关闭'}}</span>
+            <span class="lab" v-if="matchInfoBase.needSignIn">&nbsp;&nbsp;|&nbsp;&nbsp;手机端报名：{{matchInfoBase.needEnroll ? '开启' : '关闭'}}</span>
           </div>
         </div>
-        <div class="list-group-item content-inline" v-if="matchInfoBase.status > 0">
+        <div class="list-group-item content-inline" v-if="matchInfoBase.status === 2 || matchInfoBase.status === 3 || matchInfoBase.status === 4">
           <div class="col">
             <span class="lab">比赛总轮数：</span>
             <span class>{{matchInfoBase.rounds}}</span>
           </div>
           <div class="col">
             <span class="lab">首轮编排：</span>
-            <span class>{{newFirstRoundRule}}</span>
+            <span class>{{firstRoundRule}}</span>
           </div>
           <div class="col">
             <span class="lab">同地区不相遇规则：</span>
@@ -82,9 +83,7 @@
 </template>
 
 <script>
-// Iview Components
 import { Card, Icon } from 'view-design'
-// Script
 import moment from 'moment'
 import { getMatchTypeString } from 'common/js/utils'
 
@@ -113,13 +112,7 @@ export default {
     endTime() {
       return moment(this.matchInfoBase.endTime).format('YYYY-MM-DD')
     },
-    matchRule() {
-      return this.matchInfoBase.regionRule === 0 ? '社体规则（普通）' : '团体规则（淮安）'
-    },
-    matchSignIn() {
-      return this.matchInfoBase.needSignIn === 0 ? '关闭' : '开启'
-    },
-    newFirstRoundRule() {
+    firstRoundRule() {
       let rule = ''
       if (this.matchInfoBase.firstRoundRule === 0) {
         rule = '随机'

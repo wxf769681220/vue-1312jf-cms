@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <!-- 顶级路由渲染出口1 -->
+    <!-- 顶级路由渲染出口 -->
     <router-view v-if="isView"></router-view>
   </div>
 </template>
@@ -37,6 +37,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-</style>

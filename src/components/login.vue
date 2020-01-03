@@ -75,6 +75,11 @@ export default {
   watch: {},
   mounted() {},
   created() {
+    this.num = 'a'
+    this.num += 'b'
+    this.num += 'c'
+    this.num += 'd'
+    console.log(this.num)
     this.checkInput()
   },
   methods: {

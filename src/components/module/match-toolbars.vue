@@ -5,7 +5,7 @@
       <Button type="warning" v-show="isPlayerTable" :size="buttonSize" @click="onPlayerTable">选手表</Button>
       <Button type="error" v-show="isJFCard" :size="buttonSize" @click="onJFCard">积分编排卡</Button>
       <Button type="info" v-show="isScoreBulletin" :size="buttonSize" @click="onScoreBulletin">成绩公告</Button>
-      <Button type="success" v-show="isAwardTable" :size="buttonSize" @click="onAwardTable">奖励签收表</Button>
+      <Button type="success" v-show="isAwardTable" :size="buttonSize" @click="onSignatureTable">奖励签收表</Button>
     </ButtonGroup>
   </div>
 </template>
@@ -60,8 +60,8 @@ export default {
     onScoreBulletin() {
       this.$emit('onScoreBulletin')
     },
-    onAwardTable() {
-      this.$emit('onAwardTable')
+    onSignatureTable() {
+      this.$emit('onSignatureTable')
     }
   },
   beforedestroy() {},

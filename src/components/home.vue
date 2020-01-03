@@ -68,9 +68,9 @@
             </li>
           </ul>
           <div class="user-info">
-            <span @click="onQuit">安全退出</span>
+            <!-- <span @click="onQuit">安全退出</span> -->
             <div class="cirle-box">
-              <img src="~common/img/avata.jpg" alt="用户头像">
+              <img src="~common/img/avata.png" alt="用户头像">
             </div>
             <span class="fs">{{user.mobile}}</span>
           </div>
@@ -238,6 +238,7 @@ export default {
     top: 0
     left: 0
     z-index: 2
+    border-right: 1px solid $border-color
     -ms-overflow-style: none
     overflow: -moz-scrollbars-none
     overflow: auto
@@ -256,7 +257,7 @@ export default {
       box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1)
     .menu
       >>>.ivu-menu
-        background-color: #000
+        background-color: $white
   .layout-inside
     padding-left: 200px
     transition: all 0.2s ease-in-out
@@ -342,4 +343,8 @@ export default {
     transition: font-size 0.2s ease 0.2s, transform 0.2s ease 0.2s
     vertical-align: middle
     font-size: 22px
+  >>>.ivu-layout-sider
+    background-color: $white
+  >>>.ivu-menu-vertical.ivu-menu-light:after
+    background-color: $white
 </style>

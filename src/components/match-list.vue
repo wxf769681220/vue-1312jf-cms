@@ -4,23 +4,14 @@
       <!-- 比赛列表 -->
       <match-card v-for="match in matchList" :key="match.id" :match="match"></match-card>
       <!-- 分页 -->
-      <Page
-        class="page"
-        show-elevator
-        v-if="matchList.length"
-        :total="page.total"
-        @on-change="pageChange"
-      />
+      <Page class="page" show-elevator v-if="matchList.length" :total="page.total" @on-change="pageChange"/>
     </div>
   </div>
 </template>
 
 <script>
-// Iview Components
 import { Page } from 'view-design'
-// Module Components
 import MatchCard from 'components/module/match-card'
-// API
 import { getMatch } from 'api'
 
 export default {

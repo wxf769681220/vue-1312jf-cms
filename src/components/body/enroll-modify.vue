@@ -102,9 +102,7 @@
 </template>
 
 <script>
-// Iview Components
 import { Modal, Button } from 'view-design'
-// ES6+ Add a rule.
 import { ValidationObserver, ValidationProvider, extend } from 'vee-validate'
 import { required } from 'vee-validate/dist/rules'
 
@@ -153,24 +151,8 @@ export default {
     this._checkInput()
   },
   methods: {
-    onEnrollModifyConfirm() {
-      if (this.matchRule === 0 || this.matchRule === 2) {
-        this.$emit('enrollModifyConfirm', this.player, this.userId)
-      } else {
-        // ...
-      }
-    },
-    onEnrollModifyCancel() {
-      this.$emit('enrollModifyCancel')
-      this._dataChange()
-    },
-    show() {
-      this.modalEnrollModify = true
-    },
-    hide() {
-      this.modalEnrollModify = false
-    },
     _dataChange() {
+      this.modalEnrollModify = true
       this.userId = this.data.id
       this.player.enrollNum = this.data.enrollNum
       this.player.realName = this.data.realName
@@ -187,6 +169,24 @@ export default {
       extend('required', {
         ...required
       })
+    },
+    onEnrollModifyConfirm() {
+      if (this.matchRule === 0 || this.matchRule === 2) {
+        this.$emit('enrollModifyConfirm', this.player, this.userId)
+      } else {
+        // ...
+      }
+      this.hide()
+    },
+    onEnrollModifyCancel() {
+      this.$emit('enrollModifyCancel')
+      this._dataChange()
+    },
+    show() {
+      this.modalEnrollModify = true
+    },
+    hide() {
+      this.modalEnrollModify = false
     }
   },
   beforedestroy() {},

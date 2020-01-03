@@ -19,6 +19,30 @@ export function getMatchTypeString(num) {
   return type
 }
 
+export function chairChange(chairIndex) {
+  if (typeof chairIndex !== 'number') {
+    return
+  }
+  let str = ''
+  switch (chairIndex) {
+    case 0:
+      str = '东'
+      break
+    case 1:
+      str = '南'
+      break
+    case 2:
+      str = '西'
+      break
+    case 3:
+      str = '北'
+      break
+    default:
+      console.log('error：', chairIndex)
+  }
+  return str
+}
+
 export function matchStatusChange(status) {
   if (typeof status !== 'number') {
     return
@@ -142,26 +166,221 @@ export function orderRuleChange(arr) {
   return result
 }
 
-export function getCurrentRoundTitle(content) {
-  if (typeof content !== 'string') {
+export function getPlayerStatus(val) {
+  if (typeof val !== 'number') {
     return
   }
-  let title
-  switch (content) {
-    case 'tables':
-      title = '本轮桌次'
+  let str
+  switch (val) {
+    case 0:
+      str = '正常'
       break
-    case 'recordTable':
-      title = '比赛记录表'
+    case 1:
+      str = '判负'
       break
-    case 'scoreEntering':
-      title = '成绩录入'
+    case 2:
+      str = '弃赛'
       break
-    case 'score':
-      title = '本轮成绩'
+    case 3:
+      str = '犯规'
+      break
+    case 4:
+      str = '轮空'
+      break
+    case 5:
+      str = '违例'
+      break
+    case 6:
+      str = '取消资格'
+      break
+    case 7:
+      str = '警告'
       break
     default:
-      console.log('error：', content)
+      console.log('error：选手其他状态!')
   }
-  return title
+  return str
+}
+
+export function getVerifyStatus(val) {
+  if (typeof val !== 'number') {
+    return
+  }
+  let str
+  switch (val) {
+    case 0:
+      str = '通过'
+      break
+    case 1:
+      str = '未审核'
+      break
+    case 2:
+      str = '拒绝'
+      break
+    default:
+      console.log('error：', val)
+  }
+  return str
+}
+
+// 成绩转换从0-13 对应 2-A+
+export function getPlayerScore(val) {
+  // console.log(typeof val)
+  if (typeof val !== 'number') {
+    return
+  }
+  let score = ''
+  switch (true) {
+    case (0 <= val) && (val <= 8):
+      score = val + 2
+      break
+    case val === 9:
+      score = 'J'
+      break
+    case val === 10:
+      score = 'Q'
+      break
+    case val === 11:
+      score = 'K'
+      break
+    case val === 12:
+      score = 'A'
+      break
+    case val === 13:
+      score = 'A+'
+      break
+    default:
+      console.log('error：', val)
+  }
+  return score
+}
+
+// 成绩转换11-15 对应 JQKAA+
+export function getPlayerScore2(val) {
+  // console.log(typeof val)
+  if (typeof val !== 'number') {
+    return
+  }
+  let score = ''
+  switch (true) {
+    case (0 < val) && (val <= 10):
+      score = val
+      break
+    case val === 11:
+      score = 'J'
+      break
+    case val === 12:
+      score = 'Q'
+      break
+    case val === 13:
+      score = 'K'
+      break
+    case val === 14:
+      score = 'A'
+      break
+    case val === 15:
+      score = 'A+'
+      break
+    default:
+      console.log('error：', val)
+  }
+  return score
+}
+
+// 根据座位匹配选手号
+export function getEnrollNumByChair(data, chairIndex) {
+  if (typeof chairIndex !== 'number') {
+    return
+  }
+  let enrollNum = ''
+  data.forEach(item => {
+    if (item.chairIndex === chairIndex) {
+      enrollNum = item.enrollNum
+    }
+  })
+  return enrollNum
+}
+
+// 根据选手号匹配选手姓名（realName）
+export function getNameByEnrollNum(playerInfo, enrollNum) {
+  if (typeof enrollNum !== 'number') {
+    return
+  }
+  let name = ''
+  playerInfo.forEach(item => {
+    if (item.enrollNum === enrollNum) {
+      name = item.realName
+    }
+  })
+  return name
+}
+
+// 获取选手去首累进分
+export function getQSLJScore(data) {
+  if (!Array.isArray(data)) {
+    return
+  }
+  let arr = []
+  data.forEach(item => {
+    arr.push(item.score)
+  })
+  // 计算每轮去首累进分
+  let QSLJScore = []
+  arr.forEach((item, index) => {
+    // console.log(item)
+    let newArr = arr.slice(0, index + 1)
+    // 去首累进分首项为0
+    newArr[0] = 0
+    let el = newArr.reduce(function (prev, cur) {
+      return prev + cur
+    })
+    QSLJScore.push(el)
+  })
+  // 计算去首累进分总分
+  let totalScore = QSLJScore.reduce(function (prev, cur) {
+    return prev + cur
+  })
+  // 返回一个对象
+  return {
+    map: QSLJScore,
+    total: totalScore
+  }
+}
+
+// 获取选手级差分总和
+export function getJCScore(data) {
+  if (!Array.isArray(data)) {
+    return
+  }
+  let totalScore = 0
+  data.forEach(item => {
+    totalScore += item.smallScore
+  })
+  return totalScore
+}
+
+// 获取选手胜轮次总和
+export function getSLCScore(data) {
+  if (!Array.isArray(data)) {
+    return
+  }
+  let totalScore = 0
+  data.forEach(item => {
+    if (item.score === 2) {
+      totalScore += 1
+    }
+  })
+  return totalScore
+}
+
+// 获取选手升级数总和
+export function getSJSScore(data) {
+  if (!Array.isArray(data)) {
+    return
+  }
+  let totalScore = 0
+  data.forEach(item => {
+    totalScore += item.upLevels
+  })
+  return totalScore
 }

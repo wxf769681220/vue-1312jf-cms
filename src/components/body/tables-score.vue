@@ -1,12 +1,5 @@
 <template>
-  <Modal
-    class="tables-score"
-    class-name="vertical-center-modal"
-    width="auto"
-    v-model="modalTablesScore"
-    @on-ok="onTablesScoreConfirm"
-    @on-cancel="onTablesScoreCancel"
-  >
+  <Modal class="tables-score" class-name="vertical-center-modal" width="auto" v-model="modalTablesScore" @on-ok="onTablesScoreConfirm" @on-cancel="onTablesScoreCancel">
     <h3 slot="header">当前桌次：{{isBye ? '轮空' : TableIndex + 1}}</h3>
 
     <!-- 非轮空 -->
@@ -20,69 +13,34 @@
       </thead>
       <tbody>
         <tr>
-          <th>{{getEnrollNumByChair(0)}}</th>
+          <th>{{getEnrollNum(0)}}</th>
           <td rowspan="2">
-            <score-setting
-              ref="scoreSetting1"
-              :data="playerScore"
-              :size="'large'"
-              :finalScore="currentTablesScore.length ? currentTablesScore[0].upLevels : 404"
-              @score="playerAScore"
-            ></score-setting>
+            <score-setting ref="scoreSetting1" :data="playerScore" :size="'large'" :finalScore="currentTablesScore.length ? currentTablesScore[0].upLevels : 404" @score="playerAScore"></score-setting>
           </td>
-          <td>
-            <score-setting
-              ref="scoreSetting2"
-              :data="playerStatus"
-              :size="'default'"
-              :finalScore="currentTablesScore.length ? currentTablesScore[0].status : 404"
-              @score="playerAStatus0"
-            ></score-setting>
+          <td :rowspan="matchInfoBase.rule === 2 ? 2 : 0">
+            <score-setting ref="scoreSetting2" :data="playerStatus" :size="'default'" :finalScore="currentTablesScore.length ? currentTablesScore[0].status : 404" @score="playerAStatus0"></score-setting>
           </td>
         </tr>
         <tr>
-          <th>{{getEnrollNumByChair(2)}}</th>
-          <td>
-            <score-setting
-              ref="scoreSetting3"
-              :data="playerStatus"
-              :size="'default'"
-              :finalScore="currentTablesScore.length ? currentTablesScore[2].status : 404"
-              @score="playerAStatus2"
-            ></score-setting>
+          <th>{{getEnrollNum(2)}}</th>
+          <!-- 若是双人赛则只显示一行 -->
+          <td v-if="matchInfoBase.rule !== 2">
+            <score-setting ref="scoreSetting3" :data="playerStatus" :size="'default'" :finalScore="currentTablesScore.length ? currentTablesScore[2].status : 404" @score="playerAStatus2"></score-setting>
           </td>
         </tr>
         <tr>
-          <th>{{getEnrollNumByChair(1)}}</th>
+          <th>{{getEnrollNum(1)}}</th>
           <td rowspan="2">
-            <score-setting
-              ref="scoreSetting4"
-              :data="playerScore"
-              :size="'large'"
-              :finalScore="currentTablesScore.length ? currentTablesScore[1].upLevels :404"
-              @score="playerBScore"
-            ></score-setting>
+            <score-setting ref="scoreSetting4" :data="playerScore" :size="'large'" :finalScore="currentTablesScore.length ? currentTablesScore[1].upLevels :404" @score="playerBScore"></score-setting>
           </td>
-          <td>
-            <score-setting
-              ref="scoreSetting5"
-              :data="playerStatus"
-              :size="'default'"
-              :finalScore="currentTablesScore.length ? currentTablesScore[1].status : 404"
-              @score="playerBStatus1"
-            ></score-setting>
+          <td :rowspan="matchInfoBase.rule === 2 ? 2 : 0">
+            <score-setting ref="scoreSetting5" :data="playerStatus" :size="'default'" :finalScore="currentTablesScore.length ? currentTablesScore[1].status : 404" @score="playerBStatus1"></score-setting>
           </td>
         </tr>
         <tr>
-          <th>{{getEnrollNumByChair(3)}}</th>
-          <td>
-            <score-setting
-              ref="scoreSetting6"
-              :data="playerStatus"
-              :size="'default'"
-              :finalScore="currentTablesScore.length ? currentTablesScore[3].status : 404"
-              @score="playerBStatus3"
-            ></score-setting>
+          <th>{{getEnrollNum(3)}}</th>
+          <td v-if="matchInfoBase.rule !== 2">
+            <score-setting ref="scoreSetting6" :data="playerStatus" :size="'default'" :finalScore="currentTablesScore.length ? currentTablesScore[3].status : 404" @score="playerBStatus3"></score-setting>
           </td>
         </tr>
       </tbody>
@@ -109,12 +67,12 @@
 </template>
 
 <script>
-// Iview Components
 import { Modal } from 'view-design'
-// module Components
 import ScoreSetting from 'components/module/score-setting'
+import { getEnrollNumByChair } from 'common/js/utils'
+import { mapGetters } from 'vuex'
 
-const BYE_CODE = 4 // 轮空状态码
+const BYE_CODE = 4
 
 export default {
   name: 'tables-score',
@@ -164,6 +122,9 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters(['matchInfoBase'])
+  },
   watch: {
     isBye(val) {
       if (!val) {
@@ -174,15 +135,8 @@ export default {
     }
   },
   methods: {
-    // 根据座位匹配选手号
-    getEnrollNumByChair(value) {
-      let enrollNum = ''
-      this.IData.forEach(item => {
-        if (item.chairIndex === value) {
-          enrollNum = item.enrollNum
-        }
-      })
-      return enrollNum
+    getEnrollNum(val) {
+      return getEnrollNumByChair(this.IData, val)
     },
     playerAScore(value) {
       this.score.playerAScore = value
@@ -242,21 +196,29 @@ export default {
       this.$emit('tablesScoreCancel', this.isBye)
     },
     _initScoreSetting() {
+      // this.timer = setTimeout(() => {
       if (this.currentTablesScore.length) {
         this.$refs.scoreSetting1.setScore()
         this.$refs.scoreSetting2.setScore()
-        this.$refs.scoreSetting3.setScore()
         this.$refs.scoreSetting4.setScore()
         this.$refs.scoreSetting5.setScore()
-        this.$refs.scoreSetting6.setScore()
+        // (双人赛)特殊处理
+        if (this.matchInfoBase.rule !== 2) {
+          this.$refs.scoreSetting3.setScore()
+          this.$refs.scoreSetting6.setScore()
+        }
       } else {
         this.$refs.scoreSetting1._initData()
         this.$refs.scoreSetting2._initData()
-        this.$refs.scoreSetting3._initData()
         this.$refs.scoreSetting4._initData()
         this.$refs.scoreSetting5._initData()
-        this.$refs.scoreSetting6._initData()
+        // (双人赛)特殊处理
+        if (this.matchInfoBase.rule !== 2) {
+          this.$refs.scoreSetting3._initData()
+          this.$refs.scoreSetting6._initData()
+        }
       }
+      // }, 20)
     },
     show() {
       this.modalTablesScore = true
@@ -264,6 +226,9 @@ export default {
     hide() {
       this.modalTablesScore = false
     }
+  },
+  beforeDestroy() {
+    // this.timer = null
   },
   components: {
     Modal,
@@ -274,13 +239,14 @@ export default {
 
 <style lang="stylus" scoped>
 @import '~common/stylus/variable'
->>>.ivu-radio-group-button .ivu-radio-wrapper-checked:first-child
-  border-color: $success-color
->>>.ivu-radio-group-button .ivu-radio-wrapper-checked
-  color: $white
-  background-color: $success-color
-  border-color: $success-color
-  box-shadow: -1px 0 0 0 $success-color
->>>.ivu-radio-group-button .ivu-radio-wrapper:hover
-  color: $success-color
+.tables-score
+  >>>.ivu-radio-group-button .ivu-radio-wrapper-checked:first-child
+    border-color: $success-color
+  >>>.ivu-radio-group-button .ivu-radio-wrapper-checked
+    color: $white
+    background-color: $success-color
+    border-color: $success-color
+    box-shadow: -1px 0 0 0 $success-color
+  >>>.ivu-radio-group-button .ivu-radio-wrapper:hover
+    color: $success-color
 </style>
