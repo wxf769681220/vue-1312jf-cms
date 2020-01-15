@@ -50,11 +50,11 @@ stylus
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- bus.js ·············· Excel上传与下载  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- jsonp.js  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- lib.js ·············· 常用函数  
-&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- prefix.js
-&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- utils.js ············ 项目中所使用的函数
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- prefix.js  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- utils.js ············ 项目中所使用的函数  
 &ensp;&ensp;-- components ········· 资源管理  
 &ensp;&ensp;&ensp;&ensp;-- base ············ 基础组件  
-&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- print-view.vue ············ 打印
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- print-view.vue ············ 打印  
 &ensp;&ensp;&ensp;&ensp;-- body ············ 放置在body下的组件  
 &ensp;&ensp;&ensp;&ensp;-- module ···········模块化组件  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- current-round.vue ············ 本场比赛当前轮  
@@ -66,11 +66,8 @@ stylus
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- match-entry.vue ······ 比赛开始  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- match-lst.vue ········ 比赛列表  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- timer.vue ············ 计时器  
-
 &ensp;&ensp;&ensp;&ensp;-- less ·············· iview  
 &ensp;&ensp;&ensp;&ensp;-- stylus ·············· css管理  
-
-
 -- .browserslistrc  
 -- .editorconfig  
 -- .eslintrc // eslit配置文件  
