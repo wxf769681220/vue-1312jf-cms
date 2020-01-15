@@ -11,7 +11,11 @@ vue^2.0 + vue-router^3.0 + vuex^3.0
 axios^0.16.1 数据通信
 
 #### UI框架
-view-design^4.0
+iview^4.0
+
+#### CSS预处理器
+
+stylus
 
 #### 相关链接
 
