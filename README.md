@@ -36,19 +36,23 @@
 
 ## 工程目录
 
-`-- dist // 编译后静态文件`
-`-- node_modules // 依赖包`
-`-- src // 项目核心文件`
-`-- .browserslistrc`
-`-- .editorconfig`
-`-- .eslintrc // eslit配置文件`
-`-- .gitignore`
-`-- babel.config`
-`-- package-lock.json`
-`-- package.json // 项目基本信息`
-`-- postcss.config`
-`-- README.md`
-`-- vue.config // webpack配置文件`
+`-- dist // 编译后静态文件`  
+`-- node_modules // 依赖包`  
+`-- src // 项目核心文件`  
+    `-- api 接口配置文件`  
+        `-- index 入口文件`  
+        `-- config 配置文件`  
+        `-- axios 配置文件`  
+`-- .browserslistrc`  
+`-- .editorconfig`  
+`-- .eslintrc // eslit配置文件`  
+`-- .gitignore`  
+`-- babel.config`  
+`-- package-lock.json`  
+`-- package.json // 项目基本信息`  
+`-- postcss.config`  
+`-- README.md`  
+`-- vue.config // webpack配置文件`  
 
 
 
