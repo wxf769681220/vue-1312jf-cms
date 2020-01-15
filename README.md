@@ -38,11 +38,39 @@ stylus
 
 -- dist // 编译后静态文件  
 -- node_modules // 依赖包  
--- src // 项目核心文件  
-&ensp;&ensp;-- api 接口配置文件  
-&ensp;&ensp;&ensp;&ensp;&ensp;-- index 入口文件  
-&ensp;&ensp;&ensp;&ensp;&ensp;-- config 配置文件  
-&ensp;&ensp;&ensp;&ensp;&ensp; -- axios 配置文件  
+-- src
+&ensp;&ensp;-- api ············ 数据通信  
+&ensp;&ensp;&ensp;&ensp;-- index ·············· 入口文件  
+&ensp;&ensp;&ensp;&ensp;-- config ············· 配置文件  
+&ensp;&ensp;&ensp;&ensp;-- axios ·············· 配置文件  
+&ensp;&ensp;-- common ········· 资源管理  
+&ensp;&ensp;&ensp;&ensp;-- img ·············· 图片管理  
+&ensp;&ensp;&ensp;&ensp;-- js ·············· 脚本管理  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- uploadExcel ·············· Excel上传与下载  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- bus.js ·············· Excel上传与下载  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- jsonp.js  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- lib.js ·············· 常用函数  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- prefix.js
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- utils.js ············ 项目中所使用的函数
+&ensp;&ensp;-- components ········· 资源管理  
+&ensp;&ensp;&ensp;&ensp;-- base ············ 基础组件  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- print-view.vue ············ 打印
+&ensp;&ensp;&ensp;&ensp;-- body ············ 放置在body下的组件  
+&ensp;&ensp;&ensp;&ensp;-- module ···········模块化组件  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- current-round.vue ············ 本场比赛当前轮  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- home.vue ············· 首页  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- login.vue ············ 登录页  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- map.vue ·············· 仪表盘  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- match-create.vue ····· 创建比赛  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- match-enroll.vue ····· 比赛报名  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- match-entry.vue ······ 比赛开始  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- match-lst.vue ········ 比赛列表  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- timer.vue ············ 计时器  
+
+&ensp;&ensp;&ensp;&ensp;-- less ·············· iview  
+&ensp;&ensp;&ensp;&ensp;-- stylus ·············· css管理  
+
+
 -- .browserslistrc  
 -- .editorconfig  
 -- .eslintrc // eslit配置文件  
