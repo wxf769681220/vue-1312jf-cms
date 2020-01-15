@@ -53,7 +53,7 @@ stylus、less
    -- 删除数据  
    -- 换座  
    -- 桌位按选手号排序  
-   -- 成绩排名按地区/单位排序
+   -- 成绩排名按地区/单位排序  
    -- excel下载  
 * 定时器
 
@@ -186,6 +186,17 @@ computed: {
 &ensp;&ensp;&ensp;&ensp;'token'  
 &ensp;&ensp;])  
 }  
+
+#### 网络请求 api/axios 封装
+
+1. 引入axios 和 vuex 模块
+2. 设置网络请求超时
+3. 设置网络请求文件格式及编码
+4. 开启 traditional 模式
+5. 请求头部信息 token 是否有效
+6. 设置请求拦截器
+7. 设置响应拦截器
+8. 封装两种请求类型： get 和 post 方法
 
 #### iview^4.0 配置
 

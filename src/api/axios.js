@@ -6,7 +6,7 @@ import store from '@/store'
  * 请求超时（10s）
  * POST请求头
 **/
-axios.defaults.timeout = 10000
+axios.defaults.timeout = 30000
 axios.defaults.headers.post['Content-Type'] = 'application/json; charset=UTF-8'
 axios.defaults.traditional = true
 
