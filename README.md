@@ -21,6 +21,9 @@ axios^0.16.1
 #### UI框架
 iview^4.0
 
+#### 表单验证
+vee-validate^3.0
+
 #### CSS预处理器
 stylus
 
@@ -32,21 +35,24 @@ stylus
 4. ESLint 官方文档：https://eslint.org/
 5. axios github地址：https://github.com/axios/axios
 6. iview^4.0 官方文档：https://www.iviewui.com/docs/introduce
-7. stylus 官方文档：https://stylus.bootcss.com/
+7. vee-validate github地址：https://github.com/logaretm/vee-validate
+8. stylus 官方文档：https://stylus.bootcss.com/
+
+### 系统功能模块
 
 ## 工程目录
 
 -- dist // 编译后静态文件  
 -- node_modules // 依赖包  
 -- src  
-&ensp;&ensp;-- api ······················································ 数据通信  
+&ensp;&ensp;-- api ·································································································· 数据通信  
 &ensp;&ensp;&ensp;&ensp;-- index ·············· 入口文件  
 &ensp;&ensp;&ensp;&ensp;-- config ············· 配置文件  
 &ensp;&ensp;&ensp;&ensp;-- axios ·············· 配置文件  
-&ensp;&ensp;-- common ··················································· 资源管理  
+&ensp;&ensp;-- common ························································································· 资源管理  
 &ensp;&ensp;&ensp;&ensp;-- img ·············· 图片管理  
-&ensp;&ensp;&ensp;&ensp;-- js ·············· 脚本管理  
-&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- uploadExcel ·············· Excel上传与下载  
+&ensp;&ensp;&ensp;&ensp;-- js ··············· 脚本管理  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- uploadExcel ·············· Excel导入与数据获取  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- bus.js ·············· 中央事件总线vue-bus插件封装  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- jsonp.js  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- lib.js ·············· 常用函数  
@@ -54,7 +60,7 @@ stylus
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- utils.js ············ 项目中所使用的函数  
 &ensp;&ensp;&ensp;&ensp;-- less ·············· iview  
 &ensp;&ensp;&ensp;&ensp;-- stylus ·············· css管理  
-&ensp;&ensp;-- components ··············································· 组件管理  
+&ensp;&ensp;-- components ·········································································· 组件管理  
 &ensp;&ensp;&ensp;&ensp;-- base ············ 基础组件  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- print-view.vue ············ 打印  
 &ensp;&ensp;&ensp;&ensp;-- body ············ 放置在body下的组件  
@@ -99,6 +105,17 @@ stylus
 -- postcss.config  
 -- README.md  
 -- vue.config // webpack配置文件  
+
+## 数据通信方式
+
+1. 父子关系组件，父组件可以使用 props 把数据传给子组件
+2. 父子关系组件，子组件可以使用 $emit 触发父组件的自定义事件
+3. 非父子关系组件，当前组件可以使用中央事件总线 $bus.$emit 的方式向外派发自定义事件
+4. 通过带参路由获取数据
+5. 通过调用api接口获取数据
+
+
+
 
 
 
