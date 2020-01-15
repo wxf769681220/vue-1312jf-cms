@@ -39,11 +39,11 @@ stylus
 -- dist // 编译后静态文件  
 -- node_modules // 依赖包  
 -- src  
-&ensp;&ensp;-- api ············ 数据通信  
+&ensp;&ensp;-- api ······················································ 数据通信  
 &ensp;&ensp;&ensp;&ensp;-- index ·············· 入口文件  
 &ensp;&ensp;&ensp;&ensp;-- config ············· 配置文件  
 &ensp;&ensp;&ensp;&ensp;-- axios ·············· 配置文件  
-&ensp;&ensp;-- common ········· 资源管理  
+&ensp;&ensp;-- common ··················································· 资源管理  
 &ensp;&ensp;&ensp;&ensp;-- img ·············· 图片管理  
 &ensp;&ensp;&ensp;&ensp;-- js ·············· 脚本管理  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- uploadExcel ·············· Excel上传与下载  
@@ -54,7 +54,7 @@ stylus
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- utils.js ············ 项目中所使用的函数  
 &ensp;&ensp;&ensp;&ensp;-- less ·············· iview  
 &ensp;&ensp;&ensp;&ensp;-- stylus ·············· css管理  
-&ensp;&ensp;-- components ········· 组件管理  
+&ensp;&ensp;-- components ··············································· 组件管理  
 &ensp;&ensp;&ensp;&ensp;-- base ············ 基础组件  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- print-view.vue ············ 打印  
 &ensp;&ensp;&ensp;&ensp;-- body ············ 放置在body下的组件  
