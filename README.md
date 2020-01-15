@@ -10,19 +10,19 @@
 ## 技术栈
 
 #### vue/vue路由/vue状态管理
-vue^2.0 + vue-router^3.0 + vuex^3.0
+  vue^2.0 + vue-router^3.0 + vuex^3.0
 
 #### 代码检测工具
-ESLint
+  ESLint
 
 #### 数据通信
-axios^0.16.1
+  axios^0.16.1
 
 #### UI框架
-iview^4.0
+  iview^4.0
 
 #### CSS预处理器
-stylus
+  stylus
 
 #### 相关链接
 
@@ -36,19 +36,19 @@ stylus
 
 ## 工程目录
 
--- dist // 编译后静态文件
--- node_modules // 依赖包
--- src // 项目核心文件
--- .browserslistrc
--- .editorconfig
--- .eslintrc // eslit配置文件
--- .gitignore
--- babel.config
--- package-lock.json
--- package.json // 项目基本信息
--- postcss.config
--- README.md
--- vue.config // webpack配置文件
+`-- dist // 编译后静态文件`
+`-- node_modules // 依赖包`
+`-- src // 项目核心文件`
+`-- .browserslistrc`
+`-- .editorconfig`
+`-- .eslintrc // eslit配置文件`
+`-- .gitignore`
+`-- babel.config`
+`-- package-lock.json`
+`-- package.json // 项目基本信息`
+`-- postcss.config`
+`-- README.md`
+`-- vue.config // webpack配置文件`
 
 
 
