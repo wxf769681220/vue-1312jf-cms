@@ -4,9 +4,14 @@
 
 ## 技术栈
 
-1. vue^2.0 + vue-router^3.0 + vuex^3.0 vue/vue路由/vue状态管理
-2. axios^0.16.1 数据通信
-3. view-design^4.0 UI框架
+#### vue/vue路由/vue状态管理
+vue^2.0 + vue-router^3.0 + vuex^3.0
+
+#### 数据通信
+axios^0.16.1 数据通信
+
+#### UI框架
+view-design^4.0
 
 #### 相关链接
 
