@@ -38,7 +38,7 @@ stylus
 
 -- dist // 编译后静态文件  
 -- node_modules // 依赖包  
--- src
+-- src  
 &ensp;&ensp;-- api ············ 数据通信  
 &ensp;&ensp;&ensp;&ensp;-- index ·············· 入口文件  
 &ensp;&ensp;&ensp;&ensp;-- config ············· 配置文件  
@@ -47,7 +47,7 @@ stylus
 &ensp;&ensp;&ensp;&ensp;-- img ·············· 图片管理  
 &ensp;&ensp;&ensp;&ensp;-- js ·············· 脚本管理  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- uploadExcel ·············· Excel上传与下载  
-&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- bus.js ·············· Excel上传与下载  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- bus.js ·············· 中央事件总线vue-bus插件封装  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- jsonp.js  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- lib.js ·············· 常用函数  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- prefix.js  
@@ -62,13 +62,13 @@ stylus
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- enroll-modify.vue ········· 修改数据  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- tables-score.vue ·········· 当前桌  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- upload-table.vue ·········· excel上传  
-&ensp;&ensp;&ensp;&ensp;-- module ···········模块化组件  
+&ensp;&ensp;&ensp;&ensp;-- module ···········功能组件  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- enroll-table.vue ·········· 报名表  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- jfcard-table.vue ·········· 积分编排卡  
-&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- match-card.vue
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- match-card.vue  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- match-info.vue ············ 本场比赛基本信息  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- match-toolbars.vue ········ 工具栏按钮组（本场比赛）  
-&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- player-table.vue ·········  选手表
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- player-table.vue ·········  选手表  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- record-table.vue ·········· 比赛记录表  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- rounds-score.vue ·········· 本轮成绩  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- score-entering.vue ·········成绩录入  
