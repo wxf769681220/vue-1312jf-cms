@@ -9,7 +9,14 @@
               <Button type="error" size="large" @click="onSeatChange">换座</Button>
               <Button type="success" size="large" @click="onTablesSort">排序</Button>
             </ButtonGroup>
-            <toolbars-table class="ml-2" :isExport="false" @on-return="onReturn" @on-print="onPrint"></toolbars-table>
+            <toolbars-table
+              class="ml-2"
+              :isExport="false"
+              :isPrint="hidePrint"
+              :isRefresh="hideRefresh"
+              @on-return="onReturn"
+              @on-print="onPrint"
+            ></toolbars-table>
           </div>
         </div>
       </div>
@@ -81,6 +88,7 @@ import {
 } from 'common/js/lib'
 import { getCurrentRoundTables, setSeat, getScore } from 'api'
 import { mapGetters, mapMutations } from 'vuex'
+import moment from 'moment'
 
 export default {
   name: 'current-round',
@@ -139,6 +147,9 @@ export default {
       }
       return newArr
     },
+    newDate() {
+      return moment(this.matchInfoBase.startTime).format('YYYY-MM-DD')
+    },
     users() {
       let arr = []
       arr = arraySubGroup(this.playersInfo, 2)
@@ -169,6 +180,12 @@ export default {
         })
       })
       return this.newArr
+    },
+    hidePrint() {
+      return !(this.content === 'scoreEntering')
+    },
+    hideRefresh() {
+      return !(this.content === 'scoreEntering' || this.content === 'recordTable')
     }
   },
   watch: {},
@@ -322,29 +339,35 @@ export default {
     onPrint() {
       let obj = null
       switch (this.content) {
-        case 'tables':
+        case 'tables': // 本轮卓次
           obj = {
             type: 'table06',
-            sortBy: this.sortBy,
             data: this.tablesData
           }
           break
-        case 'recordTable':
+        case 'score': // 本轮成绩
           obj = {
             type: 'table07',
             data: this.tablesData
           }
           break
-        case 'score':
+        case 'recordTable': // 比赛记录表
           obj = {
             type: 'table08',
-            data: this.scoreData
+            data: this.recordData,
+            playersInfo: this.users,
+            matchInfoBase: {
+              date: this.newDate,
+              name: this.matchInfoBase.name,
+              currentRound: this.matchInfoBase.currentRound
+            }
           }
           break
         default:
           console.log('error：', this.content)
       }
       this.setPrintData(obj)
+      console.log('打印数据：', obj)
       this.$router.push({
         path: '/printView'
       })

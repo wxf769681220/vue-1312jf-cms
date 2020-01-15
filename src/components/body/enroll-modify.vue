@@ -1,11 +1,5 @@
 <template>
-  <Modal
-    class="enroll-modify"
-    class-name="vertical-center-modal"
-    footer-hide
-    v-model="modalEnrollModify"
-    @on-cancel="onEnrollModifyCancel"
-  >
+  <Modal class="enroll-modify" class-name="vertical-center-modal" footer-hide v-model="modalEnrollModify" @on-cancel="onEnrollModifyCancel">
     <h3 slot="header">修改数据</h3>
     <ValidationObserver class="form" ref="observer" tag="form" v-slot="{ valid }">
       <!-- 队伍号 -->
@@ -88,13 +82,7 @@
         </div>
       </div>
 
-      <Button
-        class="btn-confirm"
-        type="primary"
-        :long="true"
-        :disabled="!valid"
-        @click="onEnrollModifyConfirm"
-      >
+      <Button class="btn-confirm" type="primary" :long="true" :disabled="!valid" @click="onEnrollModifyConfirm">
         <span>修改</span>
       </Button>
     </ValidationObserver>
@@ -145,8 +133,7 @@ export default {
       this._dataChange()
     }
   },
-  mounted() {
-  },
+  mounted() {},
   created() {
     this._checkInput()
   },
@@ -180,7 +167,19 @@ export default {
     },
     onEnrollModifyCancel() {
       this.$emit('enrollModifyCancel')
-      this._dataChange()
+      this._initData()
+    },
+    _initData() {
+      this.player.enrollNum = ''
+      this.player.realName = ''
+      this.player.idNumber = ''
+      this.player.phone = ''
+      this.player.region = ''
+      this.player.preparer = ''
+      this.player.preparerPhone = ''
+      this.player.remark = ''
+      this.myTeam.teamNo = ''
+      this.myTeam.teamName = ''
     },
     show() {
       this.modalEnrollModify = true

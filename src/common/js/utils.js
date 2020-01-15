@@ -196,6 +196,9 @@ export function getPlayerStatus(val) {
     case 7:
       str = '警告'
       break
+    case 8:
+      str = '正常'
+      break
     default:
       console.log('error：选手其他状态!')
   }

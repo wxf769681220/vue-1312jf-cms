@@ -80,6 +80,7 @@
       ref="jfcardTable"
       :playerInfo="playerInfo"
       :jsCardInfo="jsCardInfo"
+      :matchType="matchInfoBase.rule"
       @screen-lock="screenLock(true)"
       @screen-free="screenLock(false)"
     ></jfcard-table>
@@ -89,6 +90,9 @@
       ref="scoreTable"
       :playerInfo="playerInfo"
       :scoreReportInfo="scoreReportInfo"
+      :matchType="matchInfoBase.rule"
+      :regionData="regionData"
+      @on-confirm="rankSortByRegion"
       @screen-lock="screenLock(true)"
       @screen-free="screenLock(false)"
     ></score-table>
@@ -155,7 +159,8 @@ export default {
       playerInfo: [],
       jsCardInfo: [],
       scoreReportInfo: [],
-      signatureInfo: []
+      signatureInfo: [],
+      regionData: [] // 按地区/单位排序数据
     }
   },
   computed: {
@@ -291,12 +296,86 @@ export default {
         }
       })
     },
+    rankSortByRegion(val) {
+      this.regionData = this.scoreReportInfo
+      this.regionData.forEach((item) => {
+        item.qsljf = this.$refs.scoreTable.QSLJScore(item.data).total
+        item.slc = this.$refs.scoreTable.SLCScore(item.data)
+        item.jcf = this.$refs.scoreTable.JCScore(item.data)
+        item.sjs = this.$refs.scoreTable.SJSScore(item.data)
+        item.region = this.getRegion(item.enrollNum)
+      })
+      this.regionData.sort(this.sortByArr(['totalScore', 'qsljf', 'slc', 'jcf', 'sjs'], false))
+
+      var regionMap = {}
+      for (let i = 0, len = this.regionData.length; i < len; i++) {
+        let e = this.regionData[i]
+        if (e.region) {
+          if (regionMap[e.region]) {
+            if (regionMap[e.region].count >= val) {
+              continue
+            }
+            regionMap[e.region].totalScore += e.totalScore
+            regionMap[e.region].qsljf += e.qsljf
+            regionMap[e.region].slc += e.slc
+            regionMap[e.region].jcf += e.jcf
+            regionMap[e.region].sjs += e.sjs
+            regionMap[e.region].status = e.status
+            regionMap[e.region].count++
+          } else {
+            regionMap[e.region] = {}
+            regionMap[e.region].totalScore = e.totalScore
+            regionMap[e.region].qsljf = e.qsljf
+            regionMap[e.region].slc = e.slc
+            regionMap[e.region].jcf = e.jcf
+            regionMap[e.region].sjs = e.sjs
+            regionMap[e.region].status = e.status
+            regionMap[e.region].region = e.region
+            regionMap[e.region].count = 1
+          }
+        }
+      }
+
+      var result = []
+      for (const region in regionMap) {
+        result.push(regionMap[region])
+      }
+      result.sort(this.sortByArr(['totalScore', 'qsljf', 'slc', 'jcf', 'sjs'], false))
+      console.log('请问：', result)
+      this.regionData = result
+    },
+    sortByArr(arr, rev) {
+      if (rev === undefined) {
+        rev = 1
+      } else {
+        rev = (rev) ? 1 : -1
+      }
+      return function (a, b) {
+        for (var i = 0; i < arr.length; i++) {
+          let attr = arr[i]
+          if (a[attr] !== b[attr]) {
+            if (a[attr] > b[attr]) {
+              return rev * 1
+            } else {
+              return rev * -1
+            }
+          }
+        }
+      }
+    },
+    getRegion(enrollNum) {
+      // console.log(enrollNum)
+      let result = this.playerInfo.filter((item) => {
+        return item.enrollNum === enrollNum
+      })
+      return result[0].region
+    },
     // 奖励签收表
     onSignatureTable() {
       this.$refs.signatureTable.show()
     },
     _signatureInfo(count) {
-      console.log(count)
+      // console.log(count)
       getSignatureInfo('', {
         'matchId': this.matchInfoBase.id,
         'page': 0,

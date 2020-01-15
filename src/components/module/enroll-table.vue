@@ -281,7 +281,4 @@ export default {
     .content
       padding: 10px 20px
       border-bottom: 1px solid $border-color
-  .enroll-table-body
-    .content
-      padding: 10px
 </style>

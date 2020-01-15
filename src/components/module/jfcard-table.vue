@@ -20,7 +20,7 @@
             <tr>
               <th colspan="2">{{player.enrollNum}}</th>
               <th colspan="2">姓名</th>
-              <th colspan="3">{{ getRealName(player.enrollNum) }}</th>
+              <th colspan="3">{{ matchType ? getRealNameBy2(player.enrollNum) : getRealName(player.enrollNum) }}</th>
               <th colspan="3"></th>
             </tr>
             <tr>
@@ -89,6 +89,10 @@ export default {
       default() {
         return []
       }
+    },
+    matchType: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -96,7 +100,8 @@ export default {
       isJfcardTable: false
     }
   },
-  computed: {},
+  computed: {
+  },
   watch: {
     isJfcardTable(val) {
       if (val) {
@@ -111,6 +116,12 @@ export default {
   },
   created() {},
   methods: {
+    getRealNameBy2(enrollNum) {
+      let result = this.playerInfo.filter((item) => {
+        return item.enrollNum === enrollNum
+      })
+      return result[0].realName + ' & ' + result[1].realName
+    },
     getRealName(enrollNum) {
       return getNameByEnrollNum(this.playerInfo, enrollNum)
     },
@@ -134,7 +145,13 @@ export default {
       let newData = this.jsCardInfo
       // 数据重构
       newData.forEach((item) => {
-        item.realName = this.getRealName(item.enrollNum)
+        if (this.matchType === 2) {
+          item.realName = this.getRealNameBy2(item.enrollNum)
+        } else if (this.matchType === 0) {
+          item.realName = this.getRealName(item.enrollNum)
+        } else {
+          console.log('其他比赛类型')
+        }
         item.QSLJScore = this.QSLJScore(item.data).total
         item.JCScore = this.JCScore(item.data)
         item.data.forEach((el, index) => {

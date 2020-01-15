@@ -1,14 +1,14 @@
 <template>
   <div class="print-view">
-    <section class="print-view-header">
+    <div class="print-view-header">
       <div class="content">
         <div class="content-inline justify-content-between">
           <h2>打印</h2>
           <Button type="default" @click="hide">返回</Button>
         </div>
       </div>
-    </section>
-    <section class="print-view-body">
+    </div>
+    <div class="print-view-body">
       <div class="content">
         <!-- 奖励签收表 -->
         <table class="table" v-if="printData.type === 'table01'">
@@ -22,8 +22,8 @@
               <td class="w-80">{{index + 1}}</td>
               <td class="w-120">{{rows.realName}}</td>
               <td class="w-120">{{rows.enrollNum}}</td>
-              <td class="w-240">无锡王庄路喜公公与支行啊</td>
-              <td class="w-200">123456789012345678</td>
+              <td class="w-240"></td>
+              <td class="w-200"></td>
               <td class="w-120"></td>
               <td class="w-140"></td>
               <td class="w-140"></td>
@@ -41,6 +41,7 @@
             <tr v-for="(rows, index) in printData.data" :key="index">
               <td>{{rows.rank}}</td>
               <td>{{rows.realName}}</td>
+              <td>{{rows.region}}</td>
               <td>{{rows.enrollNum}}</td>
               <td>{{rows.totalScore}}</td>
               <td>{{rows.QSLJScore}}</td>
@@ -161,14 +162,81 @@
             </tr>
           </table>
         </div>
+
+        <!-- 比赛记录表 -->
+        <div class="table-wrap" v-if="printData.type === 'table08'">
+          <section class="section" v-for="(table,index) in printData.data" :key="index">
+            <h2 class="mb-2 text-center">{{printData.matchInfoBase.name}}</h2>
+            <div class="content-inline justify-content-between mb-2">
+              <div>
+                <span>轮次：{{printData.matchInfoBase.currentRound}}</span>
+                <span class="ml-2">桌次：{{table.tableIndex + 1}}</span>
+              </div>
+              <div class="date">
+                <span>比赛日期：{{printData.matchInfoBase.date}}</span>
+              </div>
+            </div>
+            <table class="table">
+              <tr>
+                <td rowspan="2">选手号</td>
+                <td rowspan="2">姓名</td>
+                <td rowspan="2">方位</td>
+                <td colspan="9">副次</td>
+                <td rowspan="2">成绩</td>
+                <td colspan="3">裁判员填写</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+                <td>9</td>
+                <td>总积分</td>
+                <td>级差分</td>
+                <td>备注</td>
+              </tr>
+              <tr v-for="item in table.group" :key="item.chairIndex">
+                <td class="fontStyle" v-if="item.length">{{item[0].enrollNum}}</td>
+                <td v-else></td>
+                <td v-if="item.length">{{_getName(item[0].enrollNum)}}</td>
+                <td v-else></td>
+                <td v-if="item.length">{{_chairChange(item[0].chairIndex)}}{{_chairChange(item[1].chairIndex)}}</td>
+                <td v-else></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </table>
+            <div class="content-inline justify-content-between mt-3">
+              <div>签名（东西）：</div>
+              <div>签名（南北）：</div>
+              <div class="mr-120">裁判员签名：</div>
+            </div>
+          </section>
+        </div>
       </div>
-    </section>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import { Button } from 'view-design'
+import { chairChange } from 'common/js/utils'
 
 export default {
   name: 'print-view',
@@ -189,6 +257,18 @@ export default {
     }, 1000)
   },
   methods: {
+    _getName(enrollNum) {
+      let realName = ''
+      this.playersInfo.forEach((item) => {
+        if (item[0].enrollNum === enrollNum) {
+          realName = item[0].realName + ' & ' + item[1].realName
+        }
+      })
+      return realName
+    },
+    _chairChange(val) {
+      return chairChange(val)
+    },
     hide() {
       this.$router.go(-1)
     }
@@ -218,8 +298,7 @@ export default {
         min-width: 500px
         text-align: center
         border: 1px solid $table-border-color
-        th,
-        td
+        th, td
           padding: 10px 12px
           font-size: $font-size-large
           border: 1px solid $table-border-color

@@ -87,41 +87,49 @@ export default {
         enrollNum: {
           title: '选手号',
           align: 'center',
+          width: '80px',
           key: 'enrollNum'
         },
         realName: {
           title: '姓名',
           align: 'center',
+          width: '100px',
           key: 'realName'
         },
         idNumber: {
           title: '身份证号',
           align: 'center',
+          width: '200px',
           key: 'idNumber'
         },
         phone: {
           title: '手机号',
           align: 'center',
+          width: '170px',
           key: 'phone'
         },
         region: {
           title: '地区/单位',
           align: 'center',
+          width: '120px',
           key: 'region'
         },
         preparer: {
           title: '填表人',
           align: 'center',
+          width: '100px',
           key: 'preparer'
         },
         preparerPhone: {
           title: '填表人电话',
           align: 'center',
+          width: '170px',
           key: 'preparerPhone'
         },
         remark: {
           title: '备注',
           align: 'center',
+          width: 'auto',
           key: 'remark'
         }
       }
@@ -189,7 +197,4 @@ export default {
     .content
       padding: 10px 20px
       border-bottom: 1px solid $border-color
-  .player-table-body
-    .content
-      padding: 10px
 </style>

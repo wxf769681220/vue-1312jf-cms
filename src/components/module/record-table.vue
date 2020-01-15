@@ -140,7 +140,7 @@ export default {
   width: 1200px
   .section
     display: block
-    padding: 15px 0
+    padding: 20px 0
     font-weight: 600
     border-bottom: 1px solid $border-color
     .table

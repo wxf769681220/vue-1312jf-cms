@@ -95,7 +95,7 @@ export default {
         realName: {
           title: '姓名',
           key: 'realName',
-          width: '100px',
+          width: '160px',
           align: 'center'
         },
         enrollNum: {
