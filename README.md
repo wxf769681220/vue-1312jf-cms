@@ -24,6 +24,15 @@ iview^4.0
 #### 表单验证
 vee-validate^3.0
 
+#### 日期处理插件
+moment^2.24.0
+
+#### 文件保存
+file-saver^2.0.2
+
+#### 表格处理
+xlsx^0.15.1
+
 #### CSS预处理器
 stylus、less
 
@@ -205,7 +214,11 @@ computed: {
 3. 如实现按需引入还需要在 babel.config 中配置
 4. 组件内通过 import { Butto } from 'view-design' 调用相关组件
 
-#### 
+#### 全局 css 样式表配置
+
+1. 在 main.js 中引入 import 'common/less/custom.less' // 底层框架
+2. 在 main.js 中引入 import 'import 'common/stylus/index.styl' // 自定义常用类
+
 
 
 

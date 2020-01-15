@@ -9,7 +9,6 @@ const MatchEnroll = () => import('components/match-enroll') // 比赛报名
 const MatchEntry = () => import('components/match-entry') // 进入比赛
 const CurrentRound = () => import('components/current-round') // 当前轮次
 
-const Page1 = () => import('components/page1')
 // 测试页
 const Test = () => import('components/base/test')
 
@@ -60,10 +59,6 @@ const routes = [
         ]
       }
     ]
-  },
-  {
-    path: '/page1',
-    component: Page1
   },
   {
     path: '/test',
