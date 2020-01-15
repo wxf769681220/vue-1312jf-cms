@@ -173,19 +173,18 @@ stylus、less
 5. getters.js ········ 取值
 
 
-`项目使用 vuex 默认提供的语法糖：`
+`项目使用 vuex 默认提供的语法糖：`  
 存值时使用：  
 ...mapMutations({  
-  setToken: 'SET_TOKEN'  
+&ensp;&ensp;setToken: 'SET_TOKEN'  
 })  
-
 this.setToken(token)  
 
 取值时在 computed 计算属性中使用：  
 computed: {  
-  ...mapGetters([  
-    'token'  
-  ])  
+&ensp;&ensp;...mapGetters([  
+&ensp;&ensp;&ensp;&ensp;'token'  
+&ensp;&ensp;])  
 }  
 
 #### iview^4.0 配置
