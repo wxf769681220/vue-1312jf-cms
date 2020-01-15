@@ -141,22 +141,24 @@ stylus、less
 2. 针对 moment 插件语言包优化
 3. 通过 config.resolve.alias 配置别名（如：访问 src/api 时，可以直接访问 api）
 
-### ESLint 配置文件 .eslintrc.js
+#### ESLint 配置文件 .eslintrc.js
 
 `项目使用 eslint 做代码检查工具，如需要关闭某条规则只需将此规则值为 0 即可。`  
 
-### package.json 配置文件
+#### package.json 配置文件
 
 `使用 npm 下载三方库的时都会在package.json 中生成 devDependencies 或者 dependencies`
 `devDependencies：开发环境使用`
 `dependencies：生产环境使用`
 
-#### iview4.0 配置
+#### iview^4.0 配置
 
 1. 项目使用 iview^4.0 版本, 借助插件 babel-plugin-import 实现按需加载组件，减少文件体积。
 2. 在 main.js 中引入 全局样式文件 custom.less, 对相关组件进行配置
-3. 如实现按需引入还需要在 babel.config 中配置：、
+3. 如实现按需引入还需要在 babel.config 中配置
 4. 组件内通过 import { Butto } from 'view-design' 调用相关组件
+
+#### 
 
 
 
