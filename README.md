@@ -145,11 +145,48 @@ stylus、less
 
 `项目使用 eslint 做代码检查工具，如需要关闭某条规则只需将此规则值为 0 即可。`  
 
-#### package.json 配置文件
+#### package.json
 
 `使用 npm 下载三方库的时都会在package.json 中生成 devDependencies 或者 dependencies`
 `devDependencies：开发环境使用`
 `dependencies：生产环境使用`
+
+#### 项目入口文件 main.js
+
+1. 引入默认配置 （vue/app/router/store）
+2. 引入自定义全局css样式表：import 'common/stylus/index.styl'
+3. 引入excel相关操作文件 import 'common/js/uploadExcel/Blob' / import 'common/js/uploadExcel/Export2Excel'
+4. 引入 iview 相关配置
+5. 引入自定义插件vue-bus： import bus from 'common/js/bus'
+
+#### vue-router 路由配置
+
+1. index.js ·········· 入口文件
+2. config.js ········· 配置文件
+
+#### vuex 状态管理配置
+
+1. index.js ·········· 入口文件
+2. action.js ········· 异步操作数据
+3. mutations.js ······ 操作数据
+4. state.js ·········· 存值
+5. getters.js ········ 取值
+
+
+`项目使用 vuex 默认提供的语法糖：`
+存值时使用：  
+...mapMutations({  
+  setToken: 'SET_TOKEN'  
+})  
+
+this.setToken(token)  
+
+取值时在 computed 计算属性中使用：  
+computed: {  
+  ...mapGetters([  
+    'token'  
+  ])  
+}  
 
 #### iview^4.0 配置
 

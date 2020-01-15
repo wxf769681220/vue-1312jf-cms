@@ -9,11 +9,11 @@ const MatchEnroll = () => import('components/match-enroll') // 比赛报名
 const MatchEntry = () => import('components/match-entry') // 进入比赛
 const CurrentRound = () => import('components/current-round') // 当前轮次
 
-// 测试页
 const Page1 = () => import('components/page1')
-
 // 测试页
 const Test = () => import('components/base/test')
+
+// 打印
 const PrintView = () => import('components/base/print-view')
 
 const routes = [
