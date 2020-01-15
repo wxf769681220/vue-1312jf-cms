@@ -25,7 +25,7 @@ iview^4.0
 vee-validate^3.0
 
 #### CSS预处理器
-stylus
+stylus、less
 
 #### 相关链接
 
@@ -51,6 +51,9 @@ stylus
    -- 新增数据  
    -- 修改数据  
    -- 删除数据  
+   -- 换座  
+   -- 桌位按选手号排序  
+   -- 成绩排名按地区/单位排序
    -- excel下载  
 * 定时器
 
@@ -58,7 +61,7 @@ stylus
 
 -- dist // 编译后静态文件  
 -- node_modules // 依赖包  
--- src  
+-- src  // 项目核心文件  
 &ensp;&ensp;-- api ·································································································· 数据通信  
 &ensp;&ensp;&ensp;&ensp;-- index ·············· 入口文件  
 &ensp;&ensp;&ensp;&ensp;-- config ············· 配置文件  
@@ -129,6 +132,39 @@ stylus
 5. 通过调用api接口获取数据
 
 ## 资源配置
+
+#### webpack 配置文件 vue.config.js
+
+`使用 vue-cli3.0 脚手架创建 vue 项目需要手动创建 vue.config.js 文件，其相关配置如下：`  
+
+1. iview 相关配置
+2. 针对 moment 插件语言包优化
+3. 通过 config.resolve.alias 配置别名（如：访问 src/api 时，可以直接访问 api）
+
+### ESLint 配置文件 .eslintrc.js
+
+`项目使用 eslint 做代码检查工具，如需要关闭某条规则只需将此规则值为 0 即可。`  
+
+### package.json 配置文件
+
+`使用 npm 下载三方库的时都会在package.json 中生成 devDependencies 或者 dependencies`
+`devDependencies：开发环境使用`
+`dependencies：生产环境使用`
+
+#### iview4.0 配置
+
+1. 项目使用 iview^4.0 版本, 借助插件 babel-plugin-import 实现按需加载组件，减少文件体积。
+2. 在 main.js 中引入 全局样式文件 custom.less, 对相关组件进行配置
+3. 如实现按需引入还需要在 babel.config 中配置：、
+4. 组件内通过 import { Butto } from 'view-design' 调用相关组件
+
+
+
+
+
+
+
+
 
 
 
