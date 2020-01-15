@@ -52,22 +52,43 @@ stylus
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- lib.js ·············· 常用函数  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- prefix.js  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- utils.js ············ 项目中所使用的函数  
-&ensp;&ensp;-- components ········· 资源管理  
+&ensp;&ensp;&ensp;&ensp;-- less ·············· iview  
+&ensp;&ensp;&ensp;&ensp;-- stylus ·············· css管理  
+&ensp;&ensp;-- components ········· 组件管理  
 &ensp;&ensp;&ensp;&ensp;-- base ············ 基础组件  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- print-view.vue ············ 打印  
 &ensp;&ensp;&ensp;&ensp;-- body ············ 放置在body下的组件  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- enroll-add.vue ············ 新增数据  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- enroll-modify.vue ········· 修改数据  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- tables-score.vue ·········· 当前桌  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- upload-table.vue ·········· excel上传  
 &ensp;&ensp;&ensp;&ensp;-- module ···········模块化组件  
-&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- current-round.vue ············ 本场比赛当前轮  
-&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- home.vue ············· 首页  
-&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- login.vue ············ 登录页  
-&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- map.vue ·············· 仪表盘  
-&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- match-create.vue ····· 创建比赛  
-&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- match-enroll.vue ····· 比赛报名  
-&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- match-entry.vue ······ 比赛开始  
-&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- match-lst.vue ········ 比赛列表  
-&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;--- timer.vue ············ 计时器  
-&ensp;&ensp;&ensp;&ensp;-- less ·············· iview  
-&ensp;&ensp;&ensp;&ensp;-- stylus ·············· css管理  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- enroll-table.vue ·········· 报名表  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- jfcard-table.vue ·········· 积分编排卡  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- match-card.vue
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- match-info.vue ············ 本场比赛基本信息  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- match-toolbars.vue ········ 工具栏按钮组（本场比赛）  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- player-table.vue ·········  选手表
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- record-table.vue ·········· 比赛记录表  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- rounds-score.vue ·········· 本轮成绩  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- score-entering.vue ·········成绩录入  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- rounds-score.vue ·········· 本轮成绩  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- score-setting.vue ········· 设置当前桌成绩  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- score-table.vue ··········· 成绩公告  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- signature-table.vue ······· 奖励签收表  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- tables-card.vue ··········· 当前桌次  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- tables-list.vue ··········· 本轮桌次  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- toolbars-table.vue ········ 工具栏按钮组（表）  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;-- verify-table.vue ·········· 报名审核表  
+&ensp;&ensp;&ensp;&ensp;--- current-round.vue ············ 本场比赛当前轮  
+&ensp;&ensp;&ensp;&ensp;--- home.vue ············· 首页  
+&ensp;&ensp;&ensp;&ensp;--- login.vue ············ 登录页  
+&ensp;&ensp;&ensp;&ensp;--- map.vue ·············· 仪表盘  
+&ensp;&ensp;&ensp;&ensp;--- match-create.vue ····· 创建比赛  
+&ensp;&ensp;&ensp;&ensp;--- match-enroll.vue ····· 比赛报名  
+&ensp;&ensp;&ensp;&ensp;--- match-entry.vue ······ 比赛开始  
+&ensp;&ensp;&ensp;&ensp;--- match-lst.vue ········ 比赛列表  
+&ensp;&ensp;&ensp;&ensp;--- timer.vue ············ 计时器  
 -- .browserslistrc  
 -- .editorconfig  
 -- .eslintrc // eslit配置文件  
